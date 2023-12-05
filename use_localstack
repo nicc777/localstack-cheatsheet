@@ -1,0 +1,6 @@
+#!/bin/sh
+
+. venv/bin/activate
+export PATH=$PATH:$PWD/opt/bin:$PWD/venv/bin
+
+alias aws='$PWD/opt/bin/aws'
