@@ -1,0 +1,14 @@
+[
+    {
+        "ParameterKey": "DnsDomainParam",
+        "ParameterValue": ".example.tld"
+    },
+    {
+        "ParameterKey": "TrustedNetworkCidrParam",
+        "ParameterValue": "192.168.2.0/24"
+    },
+    {
+        "ParameterKey": "VpcFlowLogBucketParam",
+        "ParameterValue": "example-flowlogs"
+    }
+]

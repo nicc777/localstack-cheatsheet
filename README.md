@@ -1,3 +1,10 @@
+
+- [localstack-cheatsheet](#localstack-cheatsheet)
+- [Start a clean environment](#start-a-clean-environment)
+- [Reset A running Environment](#reset-a-running-environment)
+- [Example Stacks and Use Cases](#example-stacks-and-use-cases)
+
+
 # localstack-cheatsheet
 
 Cheatsheet I use myself for testing new AWS development locally using [_localstack_](https://www.localstack.cloud/).
@@ -79,3 +86,19 @@ Output (example):
     "Arn": "arn:aws:iam::000000000000:root"
 }
 ```
+
+# Reset A running Environment
+
+Run the command:
+
+```shell
+localstack state reset
+```
+
+# Example Stacks and Use Cases
+
+Below is a list of stacks and use cases I will maintain on this repo.
+
+| Scenario                                                                    | Description                                                                                                                | Dependencies (Scenarios) |
+|:---------------------------------------------------------------------------:|----------------------------------------------------------------------------------------------------------------------------|--------------------------|
+| [001](./scenarios/001-basic-private-vpd-with-flowlogs-to-s3-and-route53.md) | The aim of this scenario is to deploy a basic private VPC with Route53. It may serve as a base for several other examples. | N/A                      |
