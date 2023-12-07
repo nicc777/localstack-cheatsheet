@@ -30,29 +30,20 @@ Expected output:
 {
     "CertificateSummaryList": [
         {
-            "CertificateArn": "arn:aws:acm:us-east-1:000000000000:certificate/47a78bd4-f037-4c58-a1a7-3b2de16a757a",
-            "DomainName": "*..example.tld",
+            "CertificateArn": "arn:aws:acm:us-east-1:000000000000:certificate/2dd97f74-c5b1-4372-9cd6-b7d7f5d2b32d",
+            "DomainName": "*.example.tld",
             "SubjectAlternativeNameSummaries": [
-                "*..example.tld"
+                "*.example.tld"
             ],
             "HasAdditionalSubjectAlternativeNames": false,
-            "Status": "ISSUED",
+            "Status": "PENDING_VALIDATION",
             "Type": "AMAZON_ISSUED",
             "KeyAlgorithm": "RSA-2048",
-            "KeyUsages": [
-                "DIGITAL_SIGNATURE",
-                "KEY_ENCIPHERMENT"
-            ],
-            "ExtendedKeyUsages": [
-                "TLS_WEB_SERVER_AUTHENTICATION",
-                "TLS_WEB_CLIENT_AUTHENTICATION"
-            ],
+            "KeyUsages": [],
+            "ExtendedKeyUsages": [],
             "InUse": false,
             "RenewalEligibility": "INELIGIBLE",
-            "NotBefore": "2023-12-07T06:33:13+01:00",
-            "NotAfter": "2024-12-06T06:33:13+01:00",
-            "CreatedAt": "2023-12-07T06:33:13.657946+01:00",
-            "IssuedAt": "2023-12-07T06:33:13.657946+01:00"
+            "CreatedAt": "2023-12-07T06:40:47.997740+01:00"
         }
     ]
 }

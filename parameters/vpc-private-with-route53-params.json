@@ -1,7 +1,7 @@
 [
     {
         "ParameterKey": "DnsDomainParam",
-        "ParameterValue": ".example.tld"
+        "ParameterValue": "example.tld"
     },
     {
         "ParameterKey": "TrustedNetworkCidrParam",
