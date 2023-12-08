@@ -1,6 +1,10 @@
 {
     "cSpell.words": [
+        "apiserver",
+        "autoscaler",
         "Cheatsheet",
-        "localstack"
+        "localstack",
+        "setuptools",
+        "xvda"
     ]
 }

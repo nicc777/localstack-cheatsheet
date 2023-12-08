@@ -18,6 +18,133 @@ aws cloudformation create-stack \
 
 ## Verification
 
+
+### List Created Resources
+
+Run for each stack created (using FSX below as an example):
+
+```shell
+aws cloudformation describe-stack-resources --stack-name eks-security-groups --profile localstack | jq ".StackResources[] | {ResourceType, PhysicalResourceId, ResourceStatus}"
+```
+
+Expected Output (Creation in progress):
+
+```json
+{
+  "ResourceType": "AWS::EC2::PrefixList",
+  "PhysicalResourceId": null,
+  "ResourceStatus": "CREATE_COMPLETE"
+}
+{
+  "ResourceType": "AWS::EC2::PrefixList",
+  "PhysicalResourceId": null,
+  "ResourceStatus": "CREATE_COMPLETE"
+}
+{
+  "ResourceType": "AWS::EC2::PrefixList",
+  "PhysicalResourceId": null,
+  "ResourceStatus": "CREATE_COMPLETE"
+}
+{
+  "ResourceType": "AWS::EC2::PrefixList",
+  "PhysicalResourceId": null,
+  "ResourceStatus": "CREATE_COMPLETE"
+}
+{
+  "ResourceType": "AWS::EC2::PrefixList",
+  "PhysicalResourceId": null,
+  "ResourceStatus": "CREATE_COMPLETE"
+}
+{
+  "ResourceType": "AWS::EC2::PrefixList",
+  "PhysicalResourceId": null,
+  "ResourceStatus": "CREATE_COMPLETE"
+}
+{
+  "ResourceType": "AWS::EC2::SecurityGroup",
+  "PhysicalResourceId": "sg-75bbf1fa995a22656",
+  "ResourceStatus": "CREATE_COMPLETE"
+}
+{
+  "ResourceType": "AWS::EC2::SecurityGroupIngress",
+  "PhysicalResourceId": null,
+  "ResourceStatus": "UPDATE_IN_PROGRESS"
+}
+{
+  "ResourceType": "AWS::EC2::SecurityGroupIngress",
+  "PhysicalResourceId": null,
+  "ResourceStatus": "UPDATE_IN_PROGRESS"
+}
+{
+  "ResourceType": "AWS::EC2::SecurityGroupIngress",
+  "PhysicalResourceId": null,
+  "ResourceStatus": "UPDATE_IN_PROGRESS"
+}
+{
+  "ResourceType": "AWS::EC2::SecurityGroupIngress",
+  "PhysicalResourceId": null,
+  "ResourceStatus": "UPDATE_IN_PROGRESS"
+}
+{
+  "ResourceType": "AWS::EC2::SecurityGroupIngress",
+  "PhysicalResourceId": null,
+  "ResourceStatus": "UPDATE_IN_PROGRESS"
+}
+{
+  "ResourceType": "AWS::EC2::SecurityGroupIngress",
+  "PhysicalResourceId": null,
+  "ResourceStatus": "UPDATE_IN_PROGRESS"
+}
+{
+  "ResourceType": "AWS::EC2::SecurityGroupIngress",
+  "PhysicalResourceId": null,
+  "ResourceStatus": "UPDATE_IN_PROGRESS"
+}
+{
+  "ResourceType": "AWS::EC2::SecurityGroupEgress",
+  "PhysicalResourceId": null,
+  "ResourceStatus": "UPDATE_IN_PROGRESS"
+}
+{
+  "ResourceType": "AWS::EC2::SecurityGroupEgress",
+  "PhysicalResourceId": null,
+  "ResourceStatus": "UPDATE_IN_PROGRESS"
+}
+{
+  "ResourceType": "AWS::EC2::SecurityGroup",
+  "PhysicalResourceId": "sg-b6faecf71f163fc16",
+  "ResourceStatus": "CREATE_COMPLETE"
+}
+{
+  "ResourceType": "AWS::EC2::SecurityGroupIngress",
+  "PhysicalResourceId": null,
+  "ResourceStatus": "UPDATE_IN_PROGRESS"
+}
+{
+  "ResourceType": "AWS::EC2::SecurityGroupIngress",
+  "PhysicalResourceId": null,
+  "ResourceStatus": "UPDATE_IN_PROGRESS"
+}
+{
+  "ResourceType": "AWS::EC2::SecurityGroupIngress",
+  "PhysicalResourceId": null,
+  "ResourceStatus": "UPDATE_IN_PROGRESS"
+}
+{
+  "ResourceType": "AWS::EC2::SecurityGroupIngress",
+  "PhysicalResourceId": null,
+  "ResourceStatus": "UPDATE_IN_PROGRESS"
+}
+{
+  "ResourceType": "AWS::EC2::SecurityGroupEgress",
+  "PhysicalResourceId": null,
+  "ResourceStatus": "UPDATE_IN_PROGRESS"
+}
+```
+
+> **Warning**
+> You will have to run the command several times and wait until ALL `ResourceStatus` values has a value of `CREATE_COMPLETE`.
+
 ### List Security Groups
 
 Run

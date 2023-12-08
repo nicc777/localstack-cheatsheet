@@ -19,6 +19,34 @@ aws cloudformation create-stack \
 
 ## Verification
 
+### List Created Resources
+
+Run
+
+```shell
+aws cloudformation describe-stack-resources --stack-name short-term-bucket --profile localstack | jq ".StackResources[] | {ResourceType, PhysicalResourceId, ResourceStatus}"
+```
+
+Expected Output:
+
+```json
+{
+  "ResourceType": "AWS::S3::Bucket",
+  "PhysicalResourceId": "st-bucket",
+  "ResourceStatus": "CREATE_COMPLETE"
+}
+{
+  "ResourceType": "AWS::S3::BucketPolicy",
+  "PhysicalResourceId": "9ff7e07c6f58153a59f64d56cd87229a",
+  "ResourceStatus": "CREATE_COMPLETE"
+}
+{
+  "ResourceType": "AWS::IAM::ManagedPolicy",
+  "PhysicalResourceId": "arn:aws:iam::000000000000:policy/short-term-bucket-S3BucketResourceReadPoli-6030b77f",
+  "ResourceStatus": "CREATE_COMPLETE"
+}
+```
+
 ### List Buckets
 
 Run

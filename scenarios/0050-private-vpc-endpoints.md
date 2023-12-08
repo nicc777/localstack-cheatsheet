@@ -65,6 +65,23 @@ aws cloudformation create-stack \
 
 ## Verification
 
+### List Created Resources
+
+Run for each stack created (using FSX below as an example):
+
+```shell
+aws cloudformation describe-stack-resources --stack-name vpc-endpoint-interface-fsx --profile localstack | jq ".StackResources[] | {ResourceType, PhysicalResourceId, ResourceStatus}"
+```
+
+Expected Output:
+
+```json
+{
+  "ResourceType": "AWS::EC2::VPCEndpoint",
+  "PhysicalResourceId": "vpce-3ed5f9c7",
+  "ResourceStatus": "CREATE_COMPLETE"
+}
+```
 ### List All Endpoints
 
 Run:

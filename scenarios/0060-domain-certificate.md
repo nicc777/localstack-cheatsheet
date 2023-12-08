@@ -16,6 +16,24 @@ aws cloudformation create-stack \
 
 ## Verification
 
+### List Created Resources
+
+Run for each stack created (using FSX below as an example):
+
+```shell
+aws cloudformation describe-stack-resources --stack-name domain-certificate --profile localstack | jq ".StackResources[] | {ResourceType, PhysicalResourceId, ResourceStatus}"
+```
+
+Expected Output:
+
+```json
+{
+  "ResourceType": "AWS::CertificateManager::Certificate",
+  "PhysicalResourceId": "arn:aws:acm:us-east-1:000000000000:certificate/e2143bf2-2b04-4708-8be2-bfb4abc1473e",
+  "ResourceStatus": "CREATE_COMPLETE"
+}
+```
+
 ### List Certificates
 
 Run
