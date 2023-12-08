@@ -62,6 +62,13 @@ aws cloudformation create-stack \
 --profile localstack
 ```
 
+### Using a Script for Mass Deployment
+
+Run:
+
+```shell
+scripts/0050-deploy-endpoints.sh
+```
 
 ## Verification
 

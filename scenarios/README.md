@@ -31,10 +31,11 @@ A `goal` is a group of scenarios put together to achieve some larger end-goal, f
 
 ## One-Liners
 
-| Goal                                                          | Command                                                                                      |
-|---------------------------------------------------------------|----------------------------------------------------------------------------------------------|
-| Get the names of all currently deployed CloudFormation stacks | `aws cloudformation list-stacks --profile localstack \| jq -r ".StackSummaries[].StackName"` |
-| Get the events from a specific CloudFormation stack           | `aws cloudformation describe-stack-events --stack-name SSSSSS --profile localstack`          |
-| List all exports in CloudFormation                            | `aws cloudformation list-exports --profile localstack`                                       |
-| List all Prefix Lists in the VPC                              | `aws ec2 describe-prefix-lists --profile localstack`                                         |
+| Goal                                                          | Command                                                                                               |
+|---------------------------------------------------------------|-------------------------------------------------------------------------------------------------------|
+| Get the names of all currently deployed CloudFormation stacks | `aws cloudformation list-stacks --profile localstack \| jq -r ".StackSummaries[].StackName"`          |
+| Get the events from a specific CloudFormation stack           | `aws cloudformation describe-stack-events --stack-name SSSSSS --profile localstack`                   |
+| List all exports in CloudFormation                            | `aws cloudformation list-exports --profile localstack`                                                |
+| List all Prefix Lists in the VPC                              | `aws ec2 describe-prefix-lists --profile localstack`                                                  |
+| List all VPC Endpoints                                        | `aws ec2 describe-vpc-endpoints --profile localstack \| jq ".VpcEndpoints[]" \| jq -r ".ServiceName"` |
 
