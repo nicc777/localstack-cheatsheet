@@ -72,7 +72,7 @@ Run:
 ```shell
 export KUBECONFIG=$HOME/eksconfig 
 
-rm -vf $KUBECONFIG && aws eks update-kubeconfig --name cluster1 --kubeconfig $KUBECONFIG --profile nicc777
+rm -vf $KUBECONFIG && aws eks update-kubeconfig --name cluster1 --kubeconfig $KUBECONFIG --profile localstack
 
 kubectl get nodes
 ```
