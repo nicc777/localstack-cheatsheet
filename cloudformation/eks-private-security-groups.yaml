@@ -83,11 +83,11 @@ Resources:
         - Cidr: '0.0.0.0/0'
           Description: 'S3 Destinations on Internet IP Addresses which will be relayed via the S3 Gateway EndPoint'
 
-  DnsAndHttpsSecurityGroup:
+  ClusterGeneralSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: The Cluster Security Group
-      GroupName: 'DnsAndHttpsSecurityGroup'
+      GroupName: 'ClusterGeneralSecurityGroup'
       VpcId:
         Fn::ImportValue: Vpc
 
@@ -98,7 +98,7 @@ Resources:
       FromPort: 10250
       ToPort: 10250
       GroupId:
-        Ref: DnsAndHttpsSecurityGroup
+        Ref: ClusterGeneralSecurityGroup
       IpProtocol: tcp
       SourcePrefixListId:
         Ref: AnyNetPrefixList
@@ -110,7 +110,7 @@ Resources:
       FromPort: 443
       ToPort: 443
       GroupId:
-        Ref: DnsAndHttpsSecurityGroup
+        Ref: ClusterGeneralSecurityGroup
       IpProtocol: tcp
       SourcePrefixListId:
         Ref: AnyNetPrefixList
@@ -122,7 +122,7 @@ Resources:
       FromPort: 9443
       ToPort: 9443
       GroupId:
-        Ref: DnsAndHttpsSecurityGroup
+        Ref: ClusterGeneralSecurityGroup
       IpProtocol: tcp
       SourcePrefixListId:
         Ref: AnyNetPrefixList
@@ -134,7 +134,7 @@ Resources:
       FromPort: 22
       ToPort: 22
       GroupId:
-        Ref: DnsAndHttpsSecurityGroup
+        Ref: ClusterGeneralSecurityGroup
       IpProtocol: tcp
       SourcePrefixListId:
         Ref: AnyNetPrefixList
@@ -146,7 +146,7 @@ Resources:
       FromPort: 53
       ToPort: 53
       GroupId:
-        Ref: DnsAndHttpsSecurityGroup
+        Ref: ClusterGeneralSecurityGroup
       IpProtocol: tcp
       SourcePrefixListId:
         Ref: AnyNetPrefixList
@@ -158,7 +158,7 @@ Resources:
       FromPort: 53
       ToPort: 53
       GroupId:
-        Ref: DnsAndHttpsSecurityGroup
+        Ref: ClusterGeneralSecurityGroup
       IpProtocol: udp
       SourcePrefixListId:
         Ref: AnyNetPrefixList
@@ -169,93 +169,93 @@ Resources:
       Description: Allow all traffic for EKS Nodes and Control Plane Communications
       IpProtocol: -1
       GroupId:
-        Ref: DnsAndHttpsSecurityGroup
+        Ref: ClusterGeneralSecurityGroup
       SourcePrefixListId:
         Ref: LocalNetPrefixList
 
-  DnsAndHttpsSecurityGroupEgress:
+  ClusterGeneralSecurityGroupEgress:
     Type: AWS::EC2::SecurityGroupEgress
     Properties:
       IpProtocol: -1
       GroupId:
-        Ref: DnsAndHttpsSecurityGroup
+        Ref: ClusterGeneralSecurityGroup
       DestinationPrefixListId:
         Ref: AnyNetPrefixList
 
-  S3DnsAndHttpsSecurityGroupEgress:
+  S3ClusterGeneralSecurityGroupEgress:
     Type: AWS::EC2::SecurityGroupEgress
     Properties:
       Description: Allow port 443/tcp (HTTPS) to S3, which could be on a number of IP addresses as it is relayed via the S3 VPC Endpoint Gateway
       FromPort: 443
       ToPort: 443
       GroupId:
-        Ref: DnsAndHttpsSecurityGroup
+        Ref: ClusterGeneralSecurityGroup
       IpProtocol: tcp
       DestinationPrefixListId:
         Ref: S3PrefixList
 
-  EksSecurityGroup:
+  ClusterAdditionalSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: The Cluster Security Group
-      GroupName: 'EksSecurityGroup'
+      GroupName: 'ClusterAdditionalSecurityGroup'
       VpcId:
         Fn::ImportValue: Vpc
 
-  NodePortTcpEksSecurityGroupIngress:
+  NodePortTcpClusterAdditionalSecurityGroupIngress:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
       Description: Allow NodePort TCP ports (see https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport)
       FromPort: 30000
       ToPort: 32767
       GroupId:
-        Ref: EksSecurityGroup
+        Ref: ClusterAdditionalSecurityGroup
       IpProtocol: tcp
       SourcePrefixListId:
         Ref: AnyNetPrefixList
 
-  HttpsEksSecurityGroupIngress:
+  HttpsClusterAdditionalSecurityGroupIngress:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
       Description: Allow port 443/tcp (HTTPS) within the cluster
       FromPort: 443
       ToPort: 443
       GroupId:
-        Ref: EksSecurityGroup
+        Ref: ClusterAdditionalSecurityGroup
       IpProtocol: tcp
       SourcePrefixListId:
         Ref: AnyNetPrefixList
 
-  HttpEksSecurityGroupIngress:
+  HttpClusterAdditionalSecurityGroupIngress:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
       Description: Allow port 80/tcp (HTTPS) within the cluster
       FromPort: 80
       ToPort: 80
       GroupId:
-        Ref: EksSecurityGroup
+        Ref: ClusterAdditionalSecurityGroup
       IpProtocol: tcp
       SourcePrefixListId:
         Ref: AnyNetPrefixList
 
-  SshEksSecurityGroupIngress:
+  SshClusterAdditionalSecurityGroupIngress:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
       Description: Allow port 22/tcp (DNS) within the cluster
       FromPort: 22
       ToPort: 22
       GroupId:
-        Ref: EksSecurityGroup
+        Ref: ClusterAdditionalSecurityGroup
       IpProtocol: tcp
       SourcePrefixListId:
         Ref: AnyNetPrefixList
 
-  EksSecurityGroupTcpAllEgress:
+  ClusterAdditionalSecurityGroupTcpAllEgress:
     Type: AWS::EC2::SecurityGroupEgress
     Properties:
       IpProtocol: -1
       GroupId:
-        Ref: EksSecurityGroup
+        Ref: ClusterAdditionalSecurityGroup
       DestinationPrefixListId:
         Ref: AnyNetPrefixList
 
@@ -280,19 +280,19 @@ Outputs:
     Value: !Ref AnyNetPrefixList
     Export:
       Name: AnyNetPrefixList
-  DnsAndHttpsSecurityGroupId:
-    Description: 'GroupId of DnsAndHttpsSecurityGroup'
+  ClusterGeneralSecurityGroupId:
+    Description: 'GroupId of ClusterGeneralSecurityGroup'
     Value:
       Fn::GetAtt:
-        - 'DnsAndHttpsSecurityGroup'
+        - 'ClusterGeneralSecurityGroup'
         - 'GroupId'
     Export:
-      Name: 'DnsAndHttpsSecurityGroupId'
-  EksSecurityGroupId:
-    Description: 'GroupId of EksSecurityGroup'
+      Name: 'ClusterGeneralSecurityGroupId'
+  ClusterAdditionalSecurityGroupId:
+    Description: 'GroupId of ClusterAdditionalSecurityGroup'
     Value:
       Fn::GetAtt:
-        - 'EksSecurityGroup'
+        - 'ClusterAdditionalSecurityGroup'
         - 'GroupId'
     Export:
-      Name: 'EksSecurityGroupId'
+      Name: 'ClusterAdditionalSecurityGroupId'
