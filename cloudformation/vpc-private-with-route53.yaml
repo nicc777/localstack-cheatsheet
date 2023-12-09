@@ -116,7 +116,8 @@ Resources:
   SubnetMainAz1:
     Type: 'AWS::EC2::Subnet'
     Properties:
-      AvailabilityZone: !Select [ 0, !GetAZs '' ]
+      # AvailabilityZone: !Select [ 0, !GetAZs '' ]
+      AvailabilityZone: !Sub "${AWS::Region}a"
       CidrBlock: !Ref MainSubnetAz1Cidr
       MapPublicIpOnLaunch: False
       VpcId: !Ref Vpc
@@ -139,7 +140,8 @@ Resources:
   SubnetMainAz2:
     Type: 'AWS::EC2::Subnet'
     Properties:
-      AvailabilityZone: !Select [ 1, !GetAZs '' ]
+      # AvailabilityZone: !Select [ 1, !GetAZs '' ]
+      AvailabilityZone: !Sub "${AWS::Region}b"
       CidrBlock: !Ref MainSubnetAz2Cidr
       MapPublicIpOnLaunch: False
       VpcId: !Ref Vpc
@@ -162,7 +164,8 @@ Resources:
   SubnetMainAz3:
     Type: 'AWS::EC2::Subnet'
     Properties:
-      AvailabilityZone: !Select [ 2, !GetAZs '' ]
+      # AvailabilityZone: !Select [ 2, !GetAZs '' ]
+      AvailabilityZone: !Sub "${AWS::Region}c"
       CidrBlock: !Ref MainSubnetAz3Cidr
       MapPublicIpOnLaunch: False
       VpcId: !Ref Vpc

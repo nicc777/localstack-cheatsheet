@@ -2,6 +2,8 @@
   - [Goal: EKS Deployed in a Private VPC](#goal-eks-deployed-in-a-private-vpc)
 - [Other Helpful Commands](#other-helpful-commands)
   - [One-Liners](#one-liners)
+- [Caveats and Alternative Approaches](#caveats-and-alternative-approaches)
+  - [CloudFormation](#cloudformation)
 
 # Goals and Scenarios
 
@@ -40,3 +42,43 @@ A `goal` is a group of scenarios put together to achieve some larger end-goal, f
 | List all VPC Endpoints                                        | `aws ec2 describe-vpc-endpoints --profile localstack \| jq ".VpcEndpoints[]" \| jq -r ".ServiceName"`                  |
 | List all stacks statuses as CSV data                          | `aws cloudformation describe-stacks --profile localstack \| jq -r ".Stacks[] \| [ .StackName, .StackStatus ] \| @csv"` |
 
+# Caveats and Alternative Approaches
+
+Generally it is best to use the same configuration as far as possible. However, this may not always be possible, due to `localstack` limitations.
+
+## CloudFormation
+
+Refer to https://docs.localstack.cloud/user-guide/aws/cloudformation/
+
+Some CloudFormation stacks require the selection of an Availability Zone. Consider the following CloudFormation snippet:
+
+```yaml
+  SubnetMainAz1:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      AvailabilityZone: !Select [ 0, !GetAZs '' ]
+      CidrBlock: !Ref MainSubnetAz1Cidr
+      MapPublicIpOnLaunch: False
+      VpcId: !Ref Vpc
+      Tags:
+        - Key: 'Name'
+          Value: 'subnet_main_az1'
+```
+
+According to the `localstack` documentation (as on 2023-12-09), the Intrinsic Function `Fn::GetAZs` in not yet implemented.
+
+Below is the alternative that was used in the examples (the original lines will remain):
+
+```yaml
+  SubnetMainAz1:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      # AvailabilityZone: !Select [ 0, !GetAZs '' ]
+      AvailabilityZone: !Sub "${AWS::Region}a"
+      CidrBlock: !Ref MainSubnetAz1Cidr
+      MapPublicIpOnLaunch: False
+      VpcId: !Ref Vpc
+      Tags:
+        - Key: 'Name'
+          Value: 'subnet_main_az1'
+```
