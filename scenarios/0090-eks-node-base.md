@@ -15,9 +15,9 @@ PARAM_VALUE_1="ParameterKey=EksClusterNameParam,ParameterValue=cluster1" && \
 PARAM_VALUE_2="ParameterKey=EksClusterEndPointUrlParam,ParameterValue=${EKS_ENDPOINT_URL}" && \
 PARAM_VALUE_3="ParameterKey=EksClusterCertificateDataParam,ParameterValue=${EKS_CERTIFICATE_DATA}" && \
 PARAM_VALUE_4="ParameterKey=EksNodeAmiIdSsmParam,ParameterValue=${NODE_AMI}" && \
-TEMPLATE_BODY="file://$PWD/cloudformation/eks-private-cluster.yaml" && \
+TEMPLATE_BODY="file://$PWD/cloudformation/eks-private-cluster-nodes-base.yaml" && \
 aws cloudformation create-stack \
---stack-name eks-cluster \
+--stack-name eks-cluster-node-base \
 --template-body $TEMPLATE_BODY \
 --parameters $PARAM_VALUE_1 $PARAM_VALUE_2 $PARAM_VALUE_3 $PARAM_VALUE_4 \
 --profile localstack
