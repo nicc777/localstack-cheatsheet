@@ -14,7 +14,7 @@ EKS_CERTIFICATE_DATA=`aws eks describe-cluster --name cluster1 --profile localst
 PARAM_VALUE_1="ParameterKey=EksClusterNameParam,ParameterValue=cluster1" && \
 PARAM_VALUE_2="ParameterKey=EksClusterEndPointUrlParam,ParameterValue=${EKS_ENDPOINT_URL}" && \
 PARAM_VALUE_3="ParameterKey=EksClusterCertificateDataParam,ParameterValue=${EKS_CERTIFICATE_DATA}" && \
-PARAM_VALUE_4="ParameterKey=EksNodeAmiIdSsmParam,ParameterValue=${NODE_AMI}" && \
+PARAM_VALUE_4="ParameterKey=ImageIdOverrideParam,ParameterValue=${NODE_AMI}" && \
 TEMPLATE_BODY="file://$PWD/cloudformation/eks-private-cluster-nodes-base.yaml" && \
 aws cloudformation create-stack \
 --stack-name eks-cluster-node-base \

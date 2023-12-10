@@ -16,12 +16,18 @@ Parameters:
   EksNodeAmiIdSsmParam:
     Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
     Description: AWS SSM parameter of the AMI ID for the EKS Node Instances. Change this value to match the version of Kubernetes you are using. Refer to https://docs.aws.amazon.com/eks/latest/userguide/retrieve-ami-id.html
+    Default: 'not-set'
+  ImageIdOverrideParam:
+    Type: 'String'
+    Description: 'If this value is supplied, it will override EksNodeAmiIdSsmParam'
+    Default: 'not-set'
   ExtraSecurityGroupIds:
     Type: 'String'
     Description: Comma separated list of client security group ids in case multi-AZ FSx file systems or other scenarios
 
 Conditions:
   ExtraSecurityGroupIdsIsEmpty: !Equals [ !Ref ExtraSecurityGroupIds, '' ]
+  UseSSmImageId: !Equals [!Ref ImageIdOverrideParam, 'not-set']
 
 Resources:
 
@@ -56,7 +62,8 @@ Resources:
               DeleteOnTermination: True
               Encrypted: True
             DeviceName: '/dev/xvda'
-        ImageId: !Ref EksNodeAmiIdSsmParam
+        # ImageId: !Ref EksNodeAmiIdSsmParam
+        ImageId: !If [UseSSmImageId, !Ref EksNodeAmiIdSsmParam, !Ref ImageIdOverrideParam]    
         SecurityGroupIds:
           Fn::If:
             - ExtraSecurityGroupIdsIsEmpty
