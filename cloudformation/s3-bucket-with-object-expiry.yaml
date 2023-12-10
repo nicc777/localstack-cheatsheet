@@ -110,15 +110,15 @@ Outputs:
     Description: 'Name of S3BucketResource'
     Value: !Ref BucketNameParam
     Export:
-      Name: S3BucketResourceName
+      Name: !Sub '${AWS::StackName}-S3BucketResourceName'
 
   S3BucketResourceArn:
     Description: 'ARN of S3BucketResource'
     Value: !GetAtt S3BucketResource.Arn
     Export:
-      Name: S3BucketResourceArn
+      Name: !Sub '${AWS::StackName}-S3BucketResourceArn'
 
   S3BucketResourceReadPolicyArn:
     Value: !Ref S3BucketResourceReadPolicy
     Export:
-      Name: 'S3BucketResourceReadPolicyArn'
+      Name: !Sub '${AWS::StackName}-S3BucketResourceReadPolicyArn'
