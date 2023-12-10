@@ -15,7 +15,7 @@ Resources:
     Properties:
       PrivateDnsEnabled: true
       SecurityGroupIds:
-        - !ImportValue DnsAndHttpsSecurityGroupId
+        - !ImportValue ClusterGeneralSecurityGroupId
       ServiceName: 
         !Sub 
           - "com.amazonaws.${AWS::Region}.${service}"

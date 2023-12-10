@@ -51,7 +51,7 @@ Resources:
       RoleArn: !GetAtt ClusterRole.Arn
       ResourcesVpcConfig:
         SecurityGroupIds:
-          - !ImportValue DnsAndHttpsSecurityGroupId
+          - !ImportValue ClusterGeneralSecurityGroupId
           - !ImportValue EksSecurityGroupId
         SubnetIds:
           - !ImportValue SubnetMainAz1
