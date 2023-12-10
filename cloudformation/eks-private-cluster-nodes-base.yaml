@@ -60,8 +60,8 @@ Resources:
         SecurityGroupIds:
           Fn::If:
             - ExtraSecurityGroupIdsIsEmpty
-            - [ !ImportValue DnsAndHttpsSecurityGroupId, !ImportValue EksSecurityGroupId, !ImportValue Ec2AccessViaSsmSecurityGroup ]
-            - !Split [ ',', !Join [ ',', [ !Ref ExtraSecurityGroupIds, !ImportValue DnsAndHttpsSecurityGroupId, !ImportValue EksSecurityGroupId, !ImportValue Ec2AccessViaSsmSecurityGroup ] ] ]
+            - [ !ImportValue ClusterGeneralSecurityGroupId, !ImportValue ClusterAdditionalSecurityGroupId, !ImportValue Ec2AccessViaSsmSecurityGroup ]
+            - !Split [ ',', !Join [ ',', [ !Ref ExtraSecurityGroupIds, !ImportValue ClusterGeneralSecurityGroupId, !ImportValue ClusterAdditionalSecurityGroupId, !ImportValue Ec2AccessViaSsmSecurityGroup ] ] ]
         MetadataOptions:
           HttpEndpoint: 'enabled'
           HttpTokens: 'required'
