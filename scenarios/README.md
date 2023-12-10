@@ -40,6 +40,7 @@ A `goal` is a group of scenarios put together to achieve some larger end-goal, f
 | List all exports in CloudFormation                            | `aws cloudformation list-exports --profile localstack`                                                                 |
 | List all Prefix Lists in the VPC                              | `aws ec2 describe-prefix-lists --profile localstack`                                                                   |
 | List all VPC Endpoints                                        | `aws ec2 describe-vpc-endpoints --profile localstack \| jq ".VpcEndpoints[]" \| jq -r ".ServiceName"`                  |
+| Describe the created VPC                                      | `aws ec2 describe-vpcs --profile localstack \| jq '.Vpcs[] \| select(.CidrBlock=="10.10.0.10/24")'`                    |
 | List all stacks statuses as CSV data                          | `aws cloudformation describe-stacks --profile localstack \| jq -r ".Stacks[] \| [ .StackName, .StackStatus ] \| @csv"` |
 
 # Caveats and Alternative Approaches
