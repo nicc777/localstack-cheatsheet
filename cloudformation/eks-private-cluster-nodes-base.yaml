@@ -24,6 +24,7 @@ Parameters:
   ExtraSecurityGroupIds:
     Type: 'String'
     Description: Comma separated list of client security group ids in case multi-AZ FSx file systems or other scenarios
+    Default: ''
 
 Conditions:
   ExtraSecurityGroupIdsIsEmpty: !Equals [ !Ref ExtraSecurityGroupIds, '' ]

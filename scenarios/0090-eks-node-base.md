@@ -21,6 +21,23 @@ aws cloudformation create-stack \
 --template-body $TEMPLATE_BODY \
 --parameters $PARAM_VALUE_1 $PARAM_VALUE_2 $PARAM_VALUE_3 $PARAM_VALUE_4 \
 --profile localstack
+
+EKS_CLUSTER_VERSION="1.24" && \
+NODE_AMI=`aws ssm get-parameter --name /aws/service/eks/optimized-ami/${EKS_CLUSTER_VERSION}/amazon-linux-2/recommended/image_id --query "Parameter.Value" --output text --profile localstack` && \
+EKS_ENDPOINT_URL=`aws eks describe-cluster --name cluster1 --profile localstack | jq -r ".cluster.endpoint"` && \
+EKS_CERTIFICATE_DATA=`aws eks describe-cluster --name cluster1 --profile localstack | jq -r ".cluster.certificateAuthority.data"` && \
+PARAM_VALUE_1="ParameterKey=EksClusterNameParam,ParameterValue=cluster1" && \
+PARAM_VALUE_2="ParameterKey=EksClusterEndPointUrlParam,ParameterValue=${EKS_ENDPOINT_URL}" && \
+PARAM_VALUE_3="ParameterKey=EksClusterCertificateDataParam,ParameterValue=${EKS_CERTIFICATE_DATA}" && \
+PARAM_VALUE_4="ParameterKey=ImageIdOverrideParam,ParameterValue=${NODE_AMI}" && \
+echo "EKS_CERTIFICATE_DATA = ${EKS_CERTIFICATE_DATA}"  && \
+echo "EKS_CLUSTER_VERSION  = ${EKS_CLUSTER_VERSION}"  && \
+echo "NODE_AMI             = ${NODE_AMI}"  && \
+echo "EKS_ENDPOINT_URL     = ${EKS_ENDPOINT_URL}"  && \
+echo "PARAM_VALUE_1        = ${PARAM_VALUE_1}"  && \
+echo "PARAM_VALUE_2        = ${PARAM_VALUE_2}"  && \
+echo "PARAM_VALUE_3        = ${PARAM_VALUE_3}"  && \
+echo "PARAM_VALUE_4        = ${PARAM_VALUE_4}"
 ```
 
 ## Verification
