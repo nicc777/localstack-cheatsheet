@@ -10,7 +10,7 @@ Run:
 EKS_CLUSTER_VERSION="1.24" && \
 NODE_AMI=`aws ssm get-parameter --name /aws/service/eks/optimized-ami/${EKS_CLUSTER_VERSION}/amazon-linux-2/recommended/image_id --query "Parameter.Value" --output text --profile localstack` && \
 EKS_ENDPOINT_URL=`aws eks describe-cluster --name cluster1 --profile localstack | jq -r ".cluster.endpoint"` && \
-EKS_CERTIFICATE_DATA=`aws eks describe-cluster --name cluster1 --profile localstack | jq -r ".cluster.certificateAuthority.data"`
+EKS_CERTIFICATE_DATA=`aws eks describe-cluster --name cluster1 --profile localstack | jq -r ".cluster.certificateAuthority.data"` && \
 PARAM_VALUE_1="ParameterKey=EksClusterNameParam,ParameterValue=cluster1" && \
 PARAM_VALUE_2="ParameterKey=EksClusterEndPointUrlParam,ParameterValue=${EKS_ENDPOINT_URL}" && \
 PARAM_VALUE_3="ParameterKey=EksClusterCertificateDataParam,ParameterValue=${EKS_CERTIFICATE_DATA}" && \
