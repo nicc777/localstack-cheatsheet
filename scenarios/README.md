@@ -4,6 +4,7 @@
   - [One-Liners](#one-liners)
 - [Caveats and Alternative Approaches](#caveats-and-alternative-approaches)
   - [CloudFormation](#cloudformation)
+  - [Security Groups with Prefix Lists](#security-groups-with-prefix-lists)
 
 # Goals and Scenarios
 
@@ -83,3 +84,9 @@ Below is the alternative that was used in the examples (the original lines will 
         - Key: 'Name'
           Value: 'subnet_main_az1'
 ```
+
+## Security Groups with Prefix Lists
+
+In short, using prefix lists does not really work at all. The end result is that none of the exports would required by other stacks will be available and therefore I had to add a specific `localstack` condition that would use a more general security group configuration that is guaranteed to work under `localstack`.
+
+See the file [cloudformation/eks-private-security-groups.yaml](cloudformation/eks-private-security-groups.yaml) for an example of such a conditional implementation. 
