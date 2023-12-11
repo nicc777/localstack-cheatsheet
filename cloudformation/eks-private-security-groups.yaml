@@ -3,9 +3,23 @@ AWSTemplateFormatVersion: '2010-09-09'
 
 Description: Security groups required for the Private EKS Cluster
 
+Parameters:
+  UseLocalstackParam:
+    Type: 'String'
+    AllowedValues:
+    - 'Yes'
+    - 'No'
+    Default: 'No'
+
+Conditions:
+  UseLocalstackConfiguration: !Equals [ !Ref UseLocalstackParam, 'Yes' ]
+  UseNormalConfiguration: !Not [ !Equals [ !Ref UseLocalstackParam, 'Yes' ] ]
+
 Resources:
+
   ControlPlaneNetPrefixList:
     Type: 'AWS::EC2::PrefixList'
+    Condition: UseNormalConfiguration
     Properties:
       PrefixListName: 'CONTROL_PLANE_NET'
       AddressFamily: 'IPv4'
@@ -19,6 +33,7 @@ Resources:
 
   WorkerNetPrefixList:
     Type: 'AWS::EC2::PrefixList'
+    Condition: UseNormalConfiguration
     Properties:
       PrefixListName: 'NODE_NET'
       AddressFamily: 'IPv4'
@@ -32,6 +47,7 @@ Resources:
 
   LocalNetPrefixList:
     Type: 'AWS::EC2::PrefixList'
+    Condition: UseNormalConfiguration
     Properties:
       PrefixListName: 'LOCAL_NET'
       AddressFamily: 'IPv4'
@@ -47,6 +63,7 @@ Resources:
 
   CorpNetPrefixList:
     Type: 'AWS::EC2::PrefixList'
+    Condition: UseNormalConfiguration
     Properties:
       PrefixListName: 'TRUSTED_NET'
       AddressFamily: 'IPv4'
@@ -60,6 +77,7 @@ Resources:
 
   AnyNetPrefixList:
     Type: 'AWS::EC2::PrefixList'
+    Condition: UseNormalConfiguration
     Properties:
       PrefixListName: 'ANY_NET'
       AddressFamily: 'IPv4'
@@ -75,6 +93,7 @@ Resources:
 
   S3PrefixList:
     Type: 'AWS::EC2::PrefixList'
+    Condition: UseNormalConfiguration
     Properties:
       PrefixListName: 'S3_NET'
       AddressFamily: 'IPv4'
@@ -93,6 +112,7 @@ Resources:
 
   ControlPlane10250PortGroupIngress:
     Type: AWS::EC2::SecurityGroupIngress
+    Condition: UseNormalConfiguration
     Properties:
       Description: Allow port 10250/tcp within the cluster
       FromPort: 10250
@@ -103,8 +123,21 @@ Resources:
       SourcePrefixListId:
         Ref: AnyNetPrefixList
 
+  ControlPlaneLocalstackIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Condition: UseLocalstackConfiguration
+    Properties:
+      Description: Allow all traffic
+      FromPort: 0
+      ToPort: 65535
+      GroupId:
+        Ref: ClusterGeneralSecurityGroup
+      IpProtocol: tcp
+      CidrIp: 0.0.0.0/0
+
   HttpsSecurityGroupIngress:
     Type: AWS::EC2::SecurityGroupIngress
+    Condition: UseNormalConfiguration
     Properties:
       Description: Allow port 443/tcp (HTTPS) within the cluster
       FromPort: 443
@@ -117,6 +150,7 @@ Resources:
 
   Https2SecurityGroupIngress:
     Type: AWS::EC2::SecurityGroupIngress
+    Condition: UseNormalConfiguration
     Properties:
       Description: Allow port 9443/tcp (HTTPS) within the cluster
       FromPort: 9443
@@ -129,6 +163,7 @@ Resources:
 
   SshTcpSecurityGroupIngress:
     Type: AWS::EC2::SecurityGroupIngress
+    Condition: UseNormalConfiguration
     Properties:
       Description: Allow port 22/tcp (SSH) within the cluster
       FromPort: 22
@@ -141,6 +176,7 @@ Resources:
 
   DnsTcpSecurityGroupIngress:
     Type: AWS::EC2::SecurityGroupIngress
+    Condition: UseNormalConfiguration
     Properties:
       Description: Allow port 53/tcp (DNS) within the cluster
       FromPort: 53
@@ -153,6 +189,7 @@ Resources:
 
   DnsUdpSecurityGroupIngress:
     Type: AWS::EC2::SecurityGroupIngress
+    Condition: UseNormalConfiguration
     Properties:
       Description: Allow port 53/udp (DNS) within the cluster
       FromPort: 53
@@ -165,6 +202,7 @@ Resources:
 
   LocalAllowAllSecurityGroupIngress:
     Type: AWS::EC2::SecurityGroupIngress
+    Condition: UseNormalConfiguration
     Properties:
       Description: Allow all traffic for EKS Nodes and Control Plane Communications
       IpProtocol: -1
@@ -175,6 +213,7 @@ Resources:
 
   ClusterGeneralSecurityGroupEgress:
     Type: AWS::EC2::SecurityGroupEgress
+    Condition: UseNormalConfiguration
     Properties:
       IpProtocol: -1
       GroupId:
@@ -184,6 +223,7 @@ Resources:
 
   S3ClusterGeneralSecurityGroupEgress:
     Type: AWS::EC2::SecurityGroupEgress
+    Condition: UseNormalConfiguration
     Properties:
       Description: Allow port 443/tcp (HTTPS) to S3, which could be on a number of IP addresses as it is relayed via the S3 VPC Endpoint Gateway
       FromPort: 443
@@ -193,6 +233,18 @@ Resources:
       IpProtocol: tcp
       DestinationPrefixListId:
         Ref: S3PrefixList
+
+  ControlPlaneLocalstackEgress:
+    Type: AWS::EC2::SecurityGroupEgress
+    Condition: UseLocalstackConfiguration
+    Properties:
+      Description: Allow all traffic
+      FromPort: 0
+      ToPort: 65535
+      GroupId:
+        Ref: ClusterGeneralSecurityGroup
+      IpProtocol: tcp
+      CidrIp: 0.0.0.0/0
 
   ClusterAdditionalSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -204,6 +256,7 @@ Resources:
 
   NodePortTcpClusterAdditionalSecurityGroupIngress:
     Type: AWS::EC2::SecurityGroupIngress
+    Condition: UseNormalConfiguration
     Properties:
       Description: Allow NodePort TCP ports (see https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport)
       FromPort: 30000
@@ -214,8 +267,21 @@ Resources:
       SourcePrefixListId:
         Ref: AnyNetPrefixList
 
+  ClusterAdditionalSecurityGroupIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Condition: UseLocalstackConfiguration
+    Properties:
+      Description: Allow all traffic
+      FromPort: 0
+      ToPort: 65535
+      GroupId:
+        Ref: ClusterAdditionalSecurityGroup
+      IpProtocol: tcp
+      CidrIp: 0.0.0.0/0
+
   HttpsClusterAdditionalSecurityGroupIngress:
     Type: AWS::EC2::SecurityGroupIngress
+    Condition: UseNormalConfiguration
     Properties:
       Description: Allow port 443/tcp (HTTPS) within the cluster
       FromPort: 443
@@ -228,6 +294,7 @@ Resources:
 
   HttpClusterAdditionalSecurityGroupIngress:
     Type: AWS::EC2::SecurityGroupIngress
+    Condition: UseNormalConfiguration
     Properties:
       Description: Allow port 80/tcp (HTTPS) within the cluster
       FromPort: 80
@@ -240,6 +307,7 @@ Resources:
 
   SshClusterAdditionalSecurityGroupIngress:
     Type: AWS::EC2::SecurityGroupIngress
+    Condition: UseNormalConfiguration
     Properties:
       Description: Allow port 22/tcp (DNS) within the cluster
       FromPort: 22
@@ -252,6 +320,7 @@ Resources:
 
   ClusterAdditionalSecurityGroupTcpAllEgress:
     Type: AWS::EC2::SecurityGroupEgress
+    Condition: UseNormalConfiguration
     Properties:
       IpProtocol: -1
       GroupId:
@@ -259,27 +328,20 @@ Resources:
       DestinationPrefixListId:
         Ref: AnyNetPrefixList
 
+  ClusterAdditionalSecurityGroupEgress:
+    Type: AWS::EC2::SecurityGroupEgress
+    Condition: UseLocalstackConfiguration
+    Properties:
+      Description: Allow all traffic
+      FromPort: 0
+      ToPort: 65535
+      GroupId:
+        Ref: ClusterAdditionalSecurityGroup
+      IpProtocol: tcp
+      CidrIp: 0.0.0.0/0
+
 Outputs:
-  ControlPlaneNetPrefixList:
-    Value: !Ref ControlPlaneNetPrefixList
-    Export:
-      Name: ControlPlaneNetPrefixList
-  WorkerNetPrefixList:
-    Value: !Ref WorkerNetPrefixList
-    Export:
-      Name: WorkerNetPrefixList
-  LocalNetPrefixList:
-    Value: !Ref LocalNetPrefixList
-    Export:
-      Name: LocalNetPrefixList
-  CorpNetPrefixList:
-    Value: !Ref CorpNetPrefixList
-    Export:
-      Name: CorpNetPrefixList
-  AnyNetPrefixList:
-    Value: !Ref AnyNetPrefixList
-    Export:
-      Name: AnyNetPrefixList
+
   ClusterGeneralSecurityGroupId:
     Description: 'GroupId of ClusterGeneralSecurityGroup'
     Value:
@@ -288,6 +350,7 @@ Outputs:
         - 'GroupId'
     Export:
       Name: 'ClusterGeneralSecurityGroupId'
+
   ClusterAdditionalSecurityGroupId:
     Description: 'GroupId of ClusterAdditionalSecurityGroup'
     Value:
