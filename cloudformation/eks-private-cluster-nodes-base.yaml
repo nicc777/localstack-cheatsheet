@@ -63,7 +63,7 @@ Resources:
               Encrypted: True
             DeviceName: '/dev/xvda'
         # ImageId: !Ref EksNodeAmiIdSsmParam
-        ImageId: !If [UseSSmImageId, !Ref EksNodeAmiIdSsmParam, !Ref ImageIdOverrideParam]    
+        ImageId: !If [UseSSmImageId, !Ref ImageIdOverrideParam, !Ref EksNodeAmiIdSsmParam]    
         SecurityGroupIds:
           Fn::If:
             - ExtraSecurityGroupIdsIsEmpty
