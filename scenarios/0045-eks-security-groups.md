@@ -10,9 +10,11 @@ Run:
 
 ```shell
 TEMPLATE_BODY="file://$PWD/cloudformation/eks-private-security-groups.yaml" && \
+PARAM_VALUE="ParameterKey=UseLocalstackParam,ParameterValue=Yes" && \
 aws cloudformation create-stack \
 --stack-name eks-security-groups \
 --template-body $TEMPLATE_BODY \
+--parameters $PARAM_VALUE \
 --profile localstack
 ```
 
