@@ -1,0 +1,35 @@
+
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: A simple test to validate localstack handling of conditions
+
+Parameters:
+  ImageIdFromSSMParam:
+    Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
+    Description: AWS SSM parameter of the AMI ID for the EKS Node Instances. Change this value to match the version of Kubernetes you are using. Refer to https://docs.aws.amazon.com/eks/latest/userguide/retrieve-ami-id.html
+    Default: '/aws/service/eks/optimized-ami/1.28/amazon-linux-2/recommended/image_id'
+  ImageIdOverrideParam:
+    Type: 'String'
+    Description: 'If this value is supplied, it will override ImageIdFromSSMParam'
+    Default: 'not-set'
+
+Conditions:
+  UseSSmImageId: !Equals [!Ref ImageIdOverrideParam, 'not-set']
+
+Resources:
+
+  SecretData: 
+    Type: AWS::SecretsManager::Secret
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete 
+    Properties:
+      Description: 'What did we select?'
+      Name: !Sub '${AWS::StackName}-PreferredImageId'
+      SecretString: !If [UseSSmImageId, !Ref ImageIdFromSSMParam, !Ref ImageIdOverrideParam]
+            
+Outputs:
+
+  SecretDataArn:
+    Value: !Ref SecretData
+    Export:
+      Name: !Sub '${AWS::StackName}-SecretDataArn'
