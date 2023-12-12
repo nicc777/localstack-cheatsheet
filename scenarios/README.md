@@ -93,6 +93,9 @@ Below is the alternative that was used in the examples (the original lines will 
           Value: 'subnet_main_az1'
 ```
 
+> **Note**
+> Above is just one example. Various workarounds may be needed in order to have CloudFormation stacks that would work both in real AWS as well as on `localstack`.
+
 ## Security Groups with Prefix Lists
 
 In short, using prefix lists does not really work at all. The end result is that none of the exports would required by other stacks will be available and therefore I had to add a specific `localstack` condition that would use a more general security group configuration that is guaranteed to work under `localstack`.
