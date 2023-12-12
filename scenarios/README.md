@@ -93,7 +93,7 @@ Below is the alternative that was used in the examples (the original lines will 
           Value: 'subnet_main_az1'
 ```
 
-> **Note**
+> [!NOTE]
 > Above is just one example. Various workarounds may be needed in order to have CloudFormation stacks that would work both in real AWS as well as on `localstack`.
 
 ## Security Groups with Prefix Lists
