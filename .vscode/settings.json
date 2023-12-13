@@ -4,6 +4,7 @@
         "autoscaler",
         "Cheatsheet",
         "localstack",
+        "Nodegroup",
         "setuptools",
         "xvda"
     ]
