@@ -61,3 +61,101 @@ Expected Output:
   "ResourceStatus": "CREATE_COMPLETE"
 }
 ```
+
+### Confirm EKS Cluster is Really Up
+
+For this test, we will use `kubectl` to confirm there are at least 3x nodes:
+
+```shell
+# Get EKS kubernetes configuration
+rm -vf $HOME/eksconfig && aws eks update-kubeconfig --name cluster1 --kubeconfig $HOME/eksconfig --endpoint-url=http://localhost:4566 --profile nicc777
+
+# Set our configuration environment variable
+export KUBECONFIG=$HOME/eksconfig 
+
+# Test EKS
+kubectl get nodes
+```
+
+Expected output from the last command:
+
+```text
+NAME                                              STATUS   ROLES                  AGE     VERSION
+k3d-cluster1-server-0                             Ready    control-plane,master   4m4s    v1.24.13+k3s1
+k3d-cluster1-agent-eks-cluster1-nodegroup-az1-0   Ready    <none>                 2m30s   v1.24.13+k3s1
+k3d-cluster1-agent-eks-cluster1-nodegroup-az2-0   Ready    <none>                 2m10s   v1.24.13+k3s1
+k3d-cluster1-agent-eks-cluster1-nodegroup-az3-0   Ready    <none>                 114s    v1.24.13+k3s1
+```
+
+### Manually Scale Up
+
+Updated the Node group scaling configuration:
+
+```shell
+aws eks update-nodegroup-config --cluster-name cluster1 --nodegroup-name eks-cluster1-nodegroup-az1 --scaling-config minSize=2,maxSize=10,desiredSize=2 --profile localstack
+```
+
+Expected output:
+
+```json
+{
+    "update": {
+        "id": "82991f6b",
+        "status": "Successful",
+        "type": "ConfigUpdate",
+        "params": [
+            {
+                "type": "minSize",
+                "value": 2
+            },
+            {
+                "type": "maxSize",
+                "value": 10
+            },
+            {
+                "type": "desiredSize",
+                "value": 2
+            }
+        ],
+        "createdAt": "2023-12-13T06:51:53.183000+01:00",
+        "errors": []
+    }
+}
+```
+
+Confirm:
+
+```shell
+aws eks describe-nodegroup --cluster-name cluster1 --nodegroup-name eks-cluster1-nodegroup-az1 --profile localstack
+```
+
+Expected output:
+
+```json
+{
+    "nodegroup": {
+        "nodegroupName": "eks-cluster1-nodegroup-az1",
+        "nodegroupArn": "arn:aws:eks:us-east-1:000000000000:nodegroup/prod/eks-cluster1-nodegroup-az1/id123",
+        "clusterName": "cluster1",
+        "createdAt": "2023-12-13T06:37:44.074000+01:00",
+        "status": "ACTIVE",
+        "scalingConfig": {
+            "minSize": 2,
+            "maxSize": 10,
+            "desiredSize": 2
+        },
+        "subnets": [
+            "subnet-0f62ef56"
+        ],
+        "nodeRole": "arn:aws:iam::000000000000:role/eks-cluster-node-base-NodeInstanceRole",
+        "labels": {},
+        "launchTemplate": {
+            "version": "1",
+            "id": "lt-0023c06a97bfc607d"
+        }
+    }
+}
+```
+
+> [!NOTE]
+> As observed on 2023-12-13, although the command executed successfully, you won't actually see a change in the number of nodes. Looking at the `localstack` loges, there was an unspecified internal server error. Hopefully this will one day be fixed. At least the API calls are successful and the values are updated appropriately - it is just not executed and applied to the cluster nodes.
