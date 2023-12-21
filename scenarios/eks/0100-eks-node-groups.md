@@ -68,7 +68,7 @@ For this test, we will use `kubectl` to confirm there are at least 3x nodes:
 
 ```shell
 # Get EKS kubernetes configuration
-rm -vf $HOME/eksconfig && aws eks update-kubeconfig --name cluster1 --kubeconfig $HOME/eksconfig --endpoint-url=http://localhost:4566 --profile nicc777
+rm -vf $HOME/eksconfig && aws eks update-kubeconfig --name cluster1 --kubeconfig $HOME/eksconfig --endpoint-url=http://localhost:4566 --profile localstack
 
 # Set our configuration environment variable
 export KUBECONFIG=$HOME/eksconfig 
