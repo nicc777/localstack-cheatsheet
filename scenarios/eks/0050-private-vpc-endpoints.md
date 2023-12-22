@@ -161,3 +161,29 @@ Expected output:
     ]
 }
 ```
+
+List all end point domains:
+
+```shell
+aws ec2 describe-vpc-endpoints --profile localstack | jq -r ".VpcEndpoints[].ServiceName"
+```
+
+Expected Output:
+
+```text
+com.amazonaws.us-east-1.fsx
+com.amazonaws.us-east-1.sqs
+com.amazonaws.us-east-1.sts
+com.amazonaws.us-east-1.secretsmanager
+com.amazonaws.us-east-1.logs
+com.amazonaws.us-east-1.elasticloadbalancing
+com.amazonaws.us-east-1.ecr.dkr
+com.amazonaws.us-east-1.ecr.api
+com.amazonaws.us-east-1.ec2
+com.amazonaws.us-east-1.autoscaling
+com.amazonaws.us-east-1.cloudformation
+com.amazonaws.us-east-1.ebs
+com.amazonaws.us-east-1.eks
+com.amazonaws.us-east-1.xray
+com.amazonaws.us-east-1.s3
+```

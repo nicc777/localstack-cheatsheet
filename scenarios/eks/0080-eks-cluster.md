@@ -22,6 +22,52 @@ aws cloudformation create-stack \
 
 ## Verification
 
+### List Created Resources
+
+Run
+
+```shell
+aws cloudformation describe-stack-resources --stack-name eks-cluster --profile localstack | jq ".StackResources[] | {ResourceType, PhysicalResourceId, ResourceStatus}"
+```
+
+Expected Output (while updating):
+
+```json
+{
+  "ResourceType": "AWS::IAM::Role",
+  "PhysicalResourceId": "eks-cluster-ClusterRole",
+  "ResourceStatus": "CREATE_COMPLETE"
+}
+{
+  "ResourceType": "AWS::EKS::Cluster",
+  "PhysicalResourceId": null,
+  "ResourceStatus": "UPDATE_IN_PROGRESS"
+}
+{
+  "ResourceType": "AWS::EKS::Addon",
+  "PhysicalResourceId": null,
+  "ResourceStatus": "UPDATE_IN_PROGRESS"
+}
+{
+  "ResourceType": "AWS::EKS::Addon",
+  "PhysicalResourceId": null,
+  "ResourceStatus": "UPDATE_IN_PROGRESS"
+}
+{
+  "ResourceType": "AWS::EKS::Addon",
+  "PhysicalResourceId": null,
+  "ResourceStatus": "UPDATE_IN_PROGRESS"
+}
+{
+  "ResourceType": "AWS::EKS::Addon",
+  "PhysicalResourceId": null,
+  "ResourceStatus": "UPDATE_IN_PROGRESS"
+}
+```
+
+> [!IMPORTANT]
+> It will take a minute or two before all `ResourceStatus` values are `CREATE_COMPLETE`
+
 ### List EKS Clusters
 
 Run

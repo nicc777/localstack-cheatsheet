@@ -1,5 +1,6 @@
 
 - [localstack-cheatsheet](#localstack-cheatsheet)
+- [Current State](#current-state)
 - [Start a clean environment](#start-a-clean-environment)
 - [Reset A running Environment](#reset-a-running-environment)
 - [Example Stacks and Use Cases](#example-stacks-and-use-cases)
@@ -8,6 +9,10 @@
 # localstack-cheatsheet
 
 Cheatsheet I use myself for testing new AWS development locally using [_localstack_](https://www.localstack.cloud/).
+
+# Current State
+
+As of 2023-12-22 I am trying to figure out DNS to allow EKS to pull images from ECR (simulating a private VPC environment). This is not yet working.
 
 # Start a clean environment
 

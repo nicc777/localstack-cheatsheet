@@ -2,5 +2,18 @@
 
 . venv/bin/activate
 export PATH=$PATH:$PWD/opt/bin:$PWD/venv/bin
+export DNS_ADDRESS="127.0.0.1"
+export LOCALSTACK_HOST="192.168.2.18"
 
 alias aws='$PWD/opt/bin/aws --endpoint-url=http://localhost:4566'
+
+echo 
+echo "Start localstack with: prompt> CONFIG_PROFILE=default localstack start"
+echo
+echo "IMPORTANT: Remember to run 'localstack dns systemd-resolved'"
+echo
+echo "When done, run 'localstack dns systemd-resolved --revert'"
+echo
+echo "Reference: https://docs.localstack.cloud/user-guide/tools/dns-server/"
+echo
+echo
