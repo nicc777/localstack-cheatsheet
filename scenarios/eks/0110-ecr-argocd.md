@@ -29,7 +29,7 @@ aws cloudformation create-stack \
 --parameters $PARAM_VALUE_1 \
 --profile localstack
 
-PARAM_VALUE_1="ParameterKey=NameParam,ParameterValue=argocd-dex-redis" && \
+PARAM_VALUE_1="ParameterKey=NameParam,ParameterValue=argocd-redis" && \
 TEMPLATE_BODY="file://$PWD/cloudformation/ecr-aws-optional-cross-account-access.yaml" && \
 aws cloudformation create-stack \
 --stack-name ecr-argocd-redis \
@@ -53,15 +53,67 @@ cat /tmp/argocd.yaml | grep "image:" | sort -u | awk -F\: '{print "docker pull"$
 Next, re-tag and push each of the images to their appropriate ECR repositories:
 
 ```shell
-# TODO
+# get the image ID's:
+docker image ls | egrep "argocd|dex|redis"
+
+# Tag - adjust in cases where you may have multiple versions of these images...
+docker image ls | grep "quay.io/argoproj/argocd" | awk '{print "docker tag "$3" localhost.localstack.cloud:4511/argocd:latest"}' > /tmp/tagging.sh
+
+docker image ls | grep "ghcr.io/dexidp/dex" | awk '{print "docker tag "$3" localhost.localstack.cloud:4511/argocd-dex:latest"}' >> /tmp/tagging.sh
+
+docker image ls | grep "redis" | awk '{print "docker tag "$3" localhost.localstack.cloud:4511/argocd-redis:latest"}' >> /tmp/tagging.sh
+
+sh /tmp/tagging.sh
 ```
+
+Check the images:
+
+```shell
+docker image ls | grep localstack | grep argocd
+```
+
+Expected output:
+
+```text
+localhost.localstack.cloud:4511/argocd         latest          4785fc1b797e   3 days ago      443MB
+localhost.localstack.cloud:4511/argocd-redis   latest          e40e2763392d   2 weeks ago     138MB
+localhost.localstack.cloud:4511/argocd-dex     latest          87a000ba044b   8 weeks ago     95.8MB
+```
+
+Push the images:
+
+```shell
+docker push localhost.localstack.cloud:4511/argocd:latest
+
+docker push localhost.localstack.cloud:4511/argocd-redis:latest
+
+docker push localhost.localstack.cloud:4511/argocd-dex:latest
+```
+
+> [!IMPORTANT]
+> You do not need to authenticate with the localstack ECR repository, and trying to do so may generate an error. In your automation, you may need to handle this error or entirely skip it if it is a localstack deployment.
 
 Finally, update the ArgoCD manifest and deploy to EKS:
 
 ```shell
-# TODO
+sed -i 's/image: quay.io\/argoproj\/argocd:v2.8.7/image: localhost.localstack.cloud:4511\/argocd:latest/g' /tmp/argocd.yaml
+
+sed -i 's/image: ghcr.io\/dexidp\/dex:v2.37.0/image: localhost.localstack.cloud:4511\/argocd-dex:latest/g' /tmp/argocd.yaml
+
+sed -i 's/image: redis:7.0.11-alpine/image: localhost.localstack.cloud:4511\/argocd-redis:latest/g' /tmp/argocd.yaml
 ```
 
+Finally, the manifest can be applied to the EKS cluster:
+
+```shell
+kubectl create namespace argocd
+
+kubectl apply -f /tmp/argocd.yaml -n argocd
+```
+
+TODO - Address DNS (https://docs.localstack.cloud/user-guide/tools/dns-server/)
+
+TODO - Add ArgoCD to Ingress
 
 ## Verification
 
@@ -101,6 +153,6 @@ Expected Output:
 ```text
 "argocd","localhost.localstack.cloud:4511/argocd"
 "argocd-dex","localhost.localstack.cloud:4511/argocd-dex"
-"argocd-dex-redis","localhost.localstack.cloud:4511/argocd-dex-redis"
+"argocd-redis","localhost.localstack.cloud:4511/argocd-dex-redis"
 ```
 
