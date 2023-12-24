@@ -63,7 +63,7 @@ Resources:
                   "tagStatus": "any",
                   "countType": "sinceImagePushed",
                   "countUnit": "days",
-                  "countNumber": 60
+                  "countNumber": 90
                 },
                 "action": {
                   "type": "expire"
