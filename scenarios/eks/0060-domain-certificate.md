@@ -18,7 +18,7 @@ aws cloudformation create-stack \
 
 ### List Created Resources
 
-Run for each stack created (using FSX below as an example):
+Run for each stack created:
 
 ```shell
 aws cloudformation describe-stack-resources --stack-name domain-certificate --profile localstack | jq ".StackResources[] | {ResourceType, PhysicalResourceId, ResourceStatus}"

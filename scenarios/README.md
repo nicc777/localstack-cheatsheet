@@ -29,8 +29,10 @@ Below are the individual deployment scenarios that aim to simulate the creation 
 | [0050](./eks/0040-add-secondary-cidr-to-private-vpc.md)                     | Adds a secondary CIDR to a Private VPC, which is useful for scenarios where you have a limited VPC CIDR with EKS deployed. | 0030                     |
 | [0060](./eks/0050-private-vpc-endpoints.md)                                 | Private VPC's require endpoints for services in the VPC to communicate with AWS Service API's.                             | 0030                     |
 | [0070](./eks/0060-domain-certificate.md)                                    | A domain certificate for our Route 53 domain.                                                                              | 0030                     |
-| [0080](./eks/0070-eks-security-groups.md)                                   | Security groups required by EKS.                                                                                           | 0030                     |
-| [0090](./eks/0080-eks-cluster.md)                                           | Deploy the EKS cluster.                                                                                                    | 0030                     |
+| [0080](./eks/0070-eks-security-groups.md)                                   | Security groups required by EKS.                                                                                           | 0060                     |
+| [0090](./eks/0080-eks-cluster.md)                                           | Deploy the EKS cluster.                                                                                                    | 0080                     |
+| [0100](./eks/0100-eks-node-groups.md)                                       | Deploy a Nodegroup per available subnet.                                                                                   | 0090                     |
+| [0110](./eks/0110-ecr-argocd.md)                                            | Create an ECR repository for the ArgoCD Image and then deploy ArgoCD in EKS.                                               | 0100                     |
 
 ## Goal: Test some localstack features
 

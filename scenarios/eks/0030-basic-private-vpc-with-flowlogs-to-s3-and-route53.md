@@ -23,6 +23,24 @@ aws cloudformation create-stack \
 --template-body $TEMPLATE_BODY \
 --parameters $PARAMETERS_FILE \
 --profile localstack
+
+# Route 53 entries for DNS - see https://docs.localstack.cloud/user-guide/aws/route53/#customizing-internal-endpoint-resolution
+zone_id=$(aws route53 create-hosted-zone \
+    --name localhost.localstack.cloud \
+    --caller-reference r1 \
+    --profile localstack | jq -r .HostedZone.Id)
+
+# Adapt the 192.168.2.18 address below to the LAN IP Address of the host running localstack
+aws route53 change-resource-record-sets \
+    --hosted-zone-id $zone_id \
+    --profile localstack \
+    --change-batch '{"Changes":[{"Action":"CREATE","ResourceRecordSet":{"Name":"localhost.localstack.cloud","Type":"A","ResourceRecords":[{"Value":"192.168.2.18"}]}},{"Action":"CREATE","ResourceRecordSet":{"Name":"*.localhost.localstack.cloud","Type":"A","ResourceRecords":[{"Value":"192.168.2.18"}]}}]}'
+
+localstack dns systemd-resolved
+
+###
+### NOTE : When you are done, remember to run: prompt> localstack dns systemd-resolved --revert
+###
 ```
 
 ## Verification
@@ -143,6 +161,36 @@ Expected Output:
   "PhysicalResourceId": "-1_None_None",
   "ResourceStatus": "CREATE_COMPLETE"
 }
+```
+
+### DNS COnfirmation
+
+Run:
+
+```shell
+dig @127.0.0.1 localhost.localstack.cloud
+```
+
+Expected output:
+
+```text
+; <<>> DiG 9.18.18-0ubuntu0.22.04.1-Ubuntu <<>> @127.0.0.1 localhost.localstack.cloud
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 42181
+;; flags: qr aa rd ra ad; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0
+
+;; QUESTION SECTION:
+;localhost.localstack.cloud.    IN      A
+
+;; ANSWER SECTION:
+localhost.localstack.cloud. 300 IN      A       192.168.2.18
+
+;; Query time: 0 msec
+;; SERVER: 127.0.0.1#53(127.0.0.1) (UDP)
+;; WHEN: Sun Dec 24 07:22:10 CET 2023
+;; MSG SIZE  rcvd: 60
 ```
 
 ### List Buckets
