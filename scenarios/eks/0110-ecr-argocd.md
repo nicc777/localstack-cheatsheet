@@ -1,4 +1,4 @@
-# EKS Node Groups
+# ECR Repositories and Deploying ArgoCD
 
 Create an ECR repository for the ArgoCD Image and then deploy ArgoCD in EKS.
 
