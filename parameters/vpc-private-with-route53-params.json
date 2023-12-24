@@ -9,6 +9,6 @@
     },
     {
         "ParameterKey": "VpcFlowLogBucketParam",
-        "ParameterValue": "example-flowlogs"
+        "ParameterValue": "nicc777-example-flowlogs"
     }
 ]

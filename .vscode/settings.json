@@ -5,6 +5,7 @@
         "autoscaler",
         "awslocal",
         "Cheatsheet",
+        "flowlogs",
         "localstack",
         "Nodegroup",
         "setuptools",

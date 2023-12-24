@@ -11,6 +11,7 @@ TEMPLATE_BODY="file://$PWD/cloudformation/ec2-ssm.yaml" && \
 aws cloudformation create-stack \
 --stack-name ec2-ssm-feature \
 --template-body $TEMPLATE_BODY \
+--capabilities CAPABILITY_IAM \
 --profile localstack
 ```
 

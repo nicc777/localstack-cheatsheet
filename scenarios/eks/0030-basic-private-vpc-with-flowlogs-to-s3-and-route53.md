@@ -12,7 +12,8 @@ TEMPLATE_BODY="file://$PWD/cloudformation/s3-bucket-with-object-expiry.yaml" && 
 aws cloudformation create-stack \
 --stack-name flowlog-bucket \
 --template-body $TEMPLATE_BODY \
---parameters ParameterKey=BucketNameParam,ParameterValue=example-flowlogs \
+--parameters ParameterKey=BucketNameParam,ParameterValue=nicc777-example-flowlogs \
+--capabilities CAPABILITY_IAM \
 --profile localstack
 
 # Create the VPC

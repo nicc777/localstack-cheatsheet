@@ -13,7 +13,8 @@ TEMPLATE_BODY="file://$PWD/cloudformation/s3-bucket-with-object-expiry.yaml" && 
 aws cloudformation create-stack \
 --stack-name short-term-bucket \
 --template-body $TEMPLATE_BODY \
---parameters ParameterKey=BucketNameParam,ParameterValue=st-bucket \
+--parameters ParameterKey=BucketNameParam,ParameterValue=nicc777-st-bucket \
+--capabilities CAPABILITY_IAM \
 --profile localstack
 ```
 
