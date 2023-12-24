@@ -1,6 +1,6 @@
 # EKS Node Groups
 
-Create an ECR repository for the ArgoCD Image
+Create an ECR repository for the ArgoCD Image and then deploy ArgoCD in EKS.
 
 You must refer to the [ArgoCD Documentation](https://argo-cd.readthedocs.io/en/stable/operator-manual/installation/#tested-versions) to determine which version is most appropriate for your chosen EKS cluster version.
 

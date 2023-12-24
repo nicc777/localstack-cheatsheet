@@ -99,7 +99,7 @@ Expected Output:
 Run
 
 ```shell
-aws ec2 describe-vpcs --profile localstack | jq '.Vpcs[] | select(.CidrBlock=="10.10.0.10/24")'  
+aws ec2 describe-vpcs --profile localstack | jq '.Vpcs[] | select(.CidrBlock=="10.10.0.0/24")'  
 ```
 
 Expected output:
@@ -108,7 +108,7 @@ Expected output:
 {
     "Vpcs": [
         {
-            "CidrBlock": "10.10.0.10/24",
+            "CidrBlock": "10.10.0.0/24",
             "DhcpOptionsId": "default",
             "State": "available",
             "VpcId": "vpc-5f48c6ae",

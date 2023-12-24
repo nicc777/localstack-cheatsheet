@@ -3,6 +3,7 @@
         "apiserver",
         "argocd",
         "autoscaler",
+        "awslocal",
         "Cheatsheet",
         "localstack",
         "Nodegroup",

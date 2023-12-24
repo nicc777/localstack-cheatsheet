@@ -28,6 +28,9 @@ Run
 
 ```shell
 aws cloudformation describe-stack-resources --stack-name eks-cluster --profile localstack | jq ".StackResources[] | {ResourceType, PhysicalResourceId, ResourceStatus}"
+
+# Alternative, more compact output:
+aws cloudformation describe-stack-resources --stack-name eks-cluster --profile localstack | jq -r ".StackResources[] | [.ResourceType,.PhysicalResourceId,.ResourceStatus] | @csv"
 ```
 
 Expected Output (while updating):
