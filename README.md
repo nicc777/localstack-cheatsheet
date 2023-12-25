@@ -1,6 +1,6 @@
 
 - [localstack-cheatsheet](#localstack-cheatsheet)
-- [Current State](#current-state)
+- [Update History](#update-history)
 - [Before you begin...](#before-you-begin)
 - [Start a clean environment](#start-a-clean-environment)
 - [Reset A running Environment](#reset-a-running-environment)
@@ -11,9 +11,18 @@
 
 Cheatsheet I use myself for testing new AWS development locally using [_localstack_](https://www.localstack.cloud/).
 
-# Current State
+# Update History
 
-As of 2023-12-22 I am trying to figure out DNS to allow EKS to pull images from ECR (simulating a private VPC environment). This is not yet working.
+| Date       | Status                                                               | Milestones                                                                                              |
+|:----------:|----------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
+| 2023-12-22 | <li>`localstack`: not yet working</li><li>`AWS`: Untested</li>       | Created most of the key scripts and instructions to create a Private EKS Cluster                        |
+| 2023-12-24 | <li>`localstack`: mostly working</li><li>`AWS`: Untested</li>        | Refer to [this issue](https://github.com/nicc777/localstack-cheatsheet/issues/1)                        |
+| 2023-12-25 | <li>`localstack`: mostly working</li><li>`AWS`: mostly working</li>  | Refer to [this issue](https://github.com/nicc777/localstack-cheatsheet/issues/1). See below for details |
+
+AWS State as on 2023-12-25:
+
+* The `FSX` VPC Endpoint failes to deploy with an error in CloudFOrmation that reads: `The VPC endpoint service com.amazonaws.us-east-1.fsx does not support the availability zone of the subnet: subnet-nnnnnnnnnnnn`. Currently looking at [this documentation page](https://repost.aws/knowledge-center/interface-endpoint-availability-zone) for finding a solution
+* The `ACM` certificate fails to create - one of [the following problems](https://repost.aws/questions/QU6U3C6whsS-eFnYu4OUsNFg/requesting-acm-acm-not-generating-cert-for-my-loadbalancer-dns) may be causing it. It is not critical at the moment.
 
 # Before you begin...
 
