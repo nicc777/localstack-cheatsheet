@@ -17,6 +17,7 @@ aws cloudformation create-stack \
 --stack-name eks-cluster \
 --template-body $TEMPLATE_BODY \
 --parameters $PARAM_VALUE \
+--capabilities CAPABILITY_NAMED_IAM \
 --profile localstack
 ```
 

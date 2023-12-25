@@ -52,7 +52,7 @@ Resources:
       ResourcesVpcConfig:
         SecurityGroupIds:
           - !ImportValue ClusterGeneralSecurityGroupId
-          - !ImportValue EksSecurityGroupId
+          - !ImportValue ClusterAdditionalSecurityGroupId
         SubnetIds:
           - !ImportValue SubnetMainAz1
           - !ImportValue SubnetMainAz2
