@@ -1,6 +1,7 @@
 
 - [localstack-cheatsheet](#localstack-cheatsheet)
 - [Current State](#current-state)
+- [Before you begin...](#before-you-begin)
 - [Start a clean environment](#start-a-clean-environment)
 - [Reset A running Environment](#reset-a-running-environment)
 - [Example Stacks and Use Cases](#example-stacks-and-use-cases)
@@ -13,6 +14,14 @@ Cheatsheet I use myself for testing new AWS development locally using [_localsta
 # Current State
 
 As of 2023-12-22 I am trying to figure out DNS to allow EKS to pull images from ECR (simulating a private VPC environment). This is not yet working.
+
+# Before you begin...
+
+Remember to set the global environment variable to specify the profile.
+
+```shell
+export PROFILE=localstack
+```
 
 # Start a clean environment
 
@@ -79,7 +88,7 @@ cli_pager=
 Test:
 
 ```shell
-aws sts get-caller-identity --profile localstack
+aws sts get-caller-identity --profile $PROFILE
 ```
 
 Output (example):

@@ -10,9 +10,9 @@ Run:
 # Prepare the parameters file
 rm -vf /tmp/eks-cluster-node-base-parameters.json && \
 EKS_CLUSTER_VERSION="1.24" && \
-NODE_AMI=`aws ssm get-parameter --name /aws/service/eks/optimized-ami/${EKS_CLUSTER_VERSION}/amazon-linux-2/recommended/image_id --query "Parameter.Value" --output text --profile localstack` && \
-EKS_ENDPOINT_URL=`aws eks describe-cluster --name cluster1 --profile localstack | jq -r ".cluster.endpoint"` && \
-EKS_CERTIFICATE_DATA=`aws eks describe-cluster --name cluster1 --profile localstack | jq -r ".cluster.certificateAuthority.data"` && \
+NODE_AMI=`aws ssm get-parameter --name /aws/service/eks/optimized-ami/${EKS_CLUSTER_VERSION}/amazon-linux-2/recommended/image_id --query "Parameter.Value" --output text --profile $PROFILE` && \
+EKS_ENDPOINT_URL=`aws eks describe-cluster --name cluster1 --profile $PROFILE --output json | jq -r ".cluster.endpoint"` && \
+EKS_CERTIFICATE_DATA=`aws eks describe-cluster --name cluster1 --profile $PROFILE --output json | jq -r ".cluster.certificateAuthority.data"` && \
 cat <<EOF >> /tmp/eks-cluster-node-base-parameters.json
 [
     {
@@ -41,7 +41,8 @@ aws cloudformation create-stack \
 --stack-name eks-cluster-node-base \
 --template-body $TEMPLATE_BODY \
 --parameters $PARAMETERS_FILE \
---profile localstack
+--capabilities CAPABILITY_NAMED_IAM \
+--profile $PROFILE
 ```
 
 ## Verification
@@ -51,7 +52,7 @@ aws cloudformation create-stack \
 Run
 
 ```shell
-aws cloudformation describe-stack-resources --stack-name eks-cluster-node-base --profile localstack | jq ".StackResources[] | {ResourceType, PhysicalResourceId, ResourceStatus}"
+aws cloudformation describe-stack-resources --stack-name eks-cluster-node-base --profile $PROFILE | jq ".StackResources[] | {ResourceType, PhysicalResourceId, ResourceStatus}"
 ```
 
 Expected Output:

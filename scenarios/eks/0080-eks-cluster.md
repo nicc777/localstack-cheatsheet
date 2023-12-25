@@ -18,7 +18,7 @@ aws cloudformation create-stack \
 --template-body $TEMPLATE_BODY \
 --parameters $PARAM_VALUE \
 --capabilities CAPABILITY_NAMED_IAM \
---profile localstack
+--profile $PROFILE
 ```
 
 ## Verification
@@ -28,10 +28,10 @@ aws cloudformation create-stack \
 Run
 
 ```shell
-aws cloudformation describe-stack-resources --stack-name eks-cluster --profile localstack | jq ".StackResources[] | {ResourceType, PhysicalResourceId, ResourceStatus}"
+aws cloudformation describe-stack-resources --stack-name eks-cluster --profile $PROFILE | jq ".StackResources[] | {ResourceType, PhysicalResourceId, ResourceStatus}"
 
 # Alternative, more compact output:
-aws cloudformation describe-stack-resources --stack-name eks-cluster --profile localstack | jq -r ".StackResources[] | [.ResourceType,.PhysicalResourceId,.ResourceStatus] | @csv"
+aws cloudformation describe-stack-resources --stack-name eks-cluster --profile $PROFILE | jq -r ".StackResources[] | [.ResourceType,.PhysicalResourceId,.ResourceStatus] | @csv"
 ```
 
 Expected Output (while updating):
@@ -77,7 +77,7 @@ Expected Output (while updating):
 Run
 
 ```shell
-aws eks describe-cluster --name cluster1 --profile localstack 
+aws eks describe-cluster --name cluster1 --profile $PROFILE 
 ```
 
 Expected output:
@@ -122,7 +122,7 @@ Run:
 ```shell
 export KUBECONFIG=$HOME/eksconfig 
 
-rm -vf $KUBECONFIG && aws eks update-kubeconfig --name cluster1 --kubeconfig $KUBECONFIG --profile localstack
+rm -vf $KUBECONFIG && aws eks update-kubeconfig --name cluster1 --kubeconfig $KUBECONFIG --profile $PROFILE
 
 kubectl get nodes
 ```

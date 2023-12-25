@@ -15,7 +15,7 @@ aws cloudformation create-stack \
 --template-body $TEMPLATE_BODY \
 --parameters ParameterKey=BucketNameParam,ParameterValue=nicc777-st-bucket \
 --capabilities CAPABILITY_IAM \
---profile localstack
+--profile $PROFILE
 ```
 
 ## Verification
@@ -25,7 +25,7 @@ aws cloudformation create-stack \
 Run
 
 ```shell
-aws cloudformation describe-stack-resources --stack-name short-term-bucket --profile localstack | jq ".StackResources[] | {ResourceType, PhysicalResourceId, ResourceStatus}"
+aws cloudformation describe-stack-resources --stack-name short-term-bucket --profile $PROFILE | jq ".StackResources[] | {ResourceType, PhysicalResourceId, ResourceStatus}"
 ```
 
 Expected Output:
@@ -53,7 +53,7 @@ Expected Output:
 Run
 
 ```shell
-aws s3api list-buckets --profile localstack
+aws s3api list-buckets --profile $PROFILE
 ```
 
 Expected output:

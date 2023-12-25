@@ -12,7 +12,7 @@ aws cloudformation create-stack \
 --stack-name ec2-ssm-feature \
 --template-body $TEMPLATE_BODY \
 --capabilities CAPABILITY_IAM \
---profile localstack
+--profile $PROFILE
 ```
 
 ## Verification
@@ -22,7 +22,7 @@ aws cloudformation create-stack \
 Run
 
 ```shell
-aws cloudformation describe-stack-resources --stack-name ec2-ssm-feature --profile localstack | jq ".StackResources[] | {ResourceType, PhysicalResourceId, ResourceStatus}"
+aws cloudformation describe-stack-resources --stack-name ec2-ssm-feature --profile $PROFILE | jq ".StackResources[] | {ResourceType, PhysicalResourceId, ResourceStatus}"
 ```
 
 Expected output:
@@ -55,7 +55,7 @@ Expected output:
 Run:
 
 ```shell
-aws cloudformation list-exports --profile localstack
+aws cloudformation list-exports --profile $PROFILE
 ```
 
 Expected Output:

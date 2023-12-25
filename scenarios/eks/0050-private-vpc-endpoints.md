@@ -42,7 +42,7 @@ aws cloudformation create-stack \
 --stack-name $STACK_NAME \
 --template-body $TEMPLATE_BODY \
 --parameters $PARAM_VALUE \
---profile localstack
+--profile $PROFILE
 ```
 
 ### Gateway VPC Endpoints
@@ -59,7 +59,7 @@ aws cloudformation create-stack \
 --stack-name $STACK_NAME \
 --template-body $TEMPLATE_BODY \
 --parameters $PARAM_VALUE \
---profile localstack
+--profile $PROFILE
 ```
 
 ### Using a Script for Mass Deployment
@@ -77,7 +77,7 @@ scripts/0050-deploy-endpoints.sh
 Run for each stack created (using FSX below as an example):
 
 ```shell
-aws cloudformation describe-stack-resources --stack-name vpc-endpoint-interface-fsx --profile localstack | jq ".StackResources[] | {ResourceType, PhysicalResourceId, ResourceStatus}"
+aws cloudformation describe-stack-resources --stack-name vpc-endpoint-interface-fsx --profile $PROFILE | jq ".StackResources[] | {ResourceType, PhysicalResourceId, ResourceStatus}"
 ```
 
 Expected Output:
@@ -94,7 +94,7 @@ Expected Output:
 Run:
 
 ```shell
-aws ec2 describe-vpc-endpoints --profile localstack
+aws ec2 describe-vpc-endpoints --profile $PROFILE
 ```
 
 Expected output:
@@ -165,7 +165,7 @@ Expected output:
 List all end point domains:
 
 ```shell
-aws ec2 describe-vpc-endpoints --profile localstack | jq -r ".VpcEndpoints[].ServiceName"
+aws ec2 describe-vpc-endpoints --profile $PROFILE | jq -r ".VpcEndpoints[].ServiceName"
 ```
 
 Expected Output:

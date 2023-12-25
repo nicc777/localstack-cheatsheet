@@ -14,7 +14,7 @@ aws cloudformation create-stack \
 --template-body $TEMPLATE_BODY \
 --parameters ParameterKey=BucketNameParam,ParameterValue=nicc777-example-flowlogs \
 --capabilities CAPABILITY_IAM \
---profile localstack
+--profile $PROFILE
 
 # Create the VPC
 TEMPLATE_BODY="file://$PWD/cloudformation/vpc-private-with-route53.yaml" && \
@@ -23,18 +23,18 @@ aws cloudformation create-stack \
 --stack-name vpc-base \
 --template-body $TEMPLATE_BODY \
 --parameters $PARAMETERS_FILE \
---profile localstack
+--profile $PROFILE
 
 # Route 53 entries for DNS - see https://docs.localstack.cloud/user-guide/aws/route53/#customizing-internal-endpoint-resolution
 zone_id=$(aws route53 create-hosted-zone \
     --name localhost.localstack.cloud \
     --caller-reference r1 \
-    --profile localstack | jq -r .HostedZone.Id)
+    --profile $PROFILE | jq -r .HostedZone.Id)
 
 # Adapt the 192.168.2.18 address below to the LAN IP Address of the host running localstack
 aws route53 change-resource-record-sets \
     --hosted-zone-id $zone_id \
-    --profile localstack \
+    --profile $PROFILE \
     --change-batch '{"Changes":[{"Action":"CREATE","ResourceRecordSet":{"Name":"localhost.localstack.cloud","Type":"A","ResourceRecords":[{"Value":"192.168.2.18"}]}},{"Action":"CREATE","ResourceRecordSet":{"Name":"*.localhost.localstack.cloud","Type":"A","ResourceRecords":[{"Value":"192.168.2.18"}]}}]}'
 
 localstack dns systemd-resolved
@@ -51,7 +51,7 @@ localstack dns systemd-resolved
 Run
 
 ```shell
-aws cloudformation describe-stack-resources --stack-name vpc-base --profile localstack | jq ".StackResources[] | {ResourceType, PhysicalResourceId, ResourceStatus}"
+aws cloudformation describe-stack-resources --stack-name vpc-base --profile $PROFILE | jq ".StackResources[] | {ResourceType, PhysicalResourceId, ResourceStatus}"
 ```
 
 Expected Output:
@@ -199,7 +199,7 @@ localhost.localstack.cloud. 300 IN      A       192.168.2.18
 Run
 
 ```shell
-aws s3api list-buckets --profile localstack
+aws s3api list-buckets --profile $PROFILE
 ```
 
 Expected output:
@@ -224,7 +224,7 @@ Expected output:
 Run
 
 ```shell
-aws ec2 describe-vpcs --profile localstack
+aws ec2 describe-vpcs --profile $PROFILE
 ```
 
 Expected output:

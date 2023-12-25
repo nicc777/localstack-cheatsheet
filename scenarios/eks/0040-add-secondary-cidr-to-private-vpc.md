@@ -11,7 +11,7 @@ TEMPLATE_BODY="file://$PWD/cloudformation/vpc-secondary-cidr.yaml" && \
 aws cloudformation create-stack \
 --stack-name vpc-secondary-cidr \
 --template-body $TEMPLATE_BODY \
---profile localstack
+--profile $PROFILE
 ```
 
 ## Verification
@@ -21,7 +21,7 @@ aws cloudformation create-stack \
 Run
 
 ```shell
-aws cloudformation describe-stack-resources --stack-name vpc-secondary-cidr --profile localstack | jq ".StackResources[] | {ResourceType, PhysicalResourceId, ResourceStatus}"
+aws cloudformation describe-stack-resources --stack-name vpc-secondary-cidr --profile $PROFILE | jq ".StackResources[] | {ResourceType, PhysicalResourceId, ResourceStatus}"
 ```
 
 Expected Output:
@@ -99,7 +99,7 @@ Expected Output:
 Run
 
 ```shell
-aws ec2 describe-vpcs --profile localstack | jq '.Vpcs[] | select(.CidrBlock=="10.10.0.0/24")'  
+aws ec2 describe-vpcs --profile $PROFILE | jq '.Vpcs[] | select(.CidrBlock=="10.10.0.0/24")'  
 ```
 
 Expected output:

@@ -11,7 +11,7 @@ TEMPLATE_BODY="file://$PWD/cloudformation/domain-certificate.yaml" && \
 aws cloudformation create-stack \
 --stack-name domain-certificate \
 --template-body $TEMPLATE_BODY \
---profile localstack
+--profile $PROFILE
 ```
 
 ## Verification
@@ -21,7 +21,7 @@ aws cloudformation create-stack \
 Run for each stack created:
 
 ```shell
-aws cloudformation describe-stack-resources --stack-name domain-certificate --profile localstack | jq ".StackResources[] | {ResourceType, PhysicalResourceId, ResourceStatus}"
+aws cloudformation describe-stack-resources --stack-name domain-certificate --profile $PROFILE | jq ".StackResources[] | {ResourceType, PhysicalResourceId, ResourceStatus}"
 ```
 
 Expected Output:
@@ -39,7 +39,7 @@ Expected Output:
 Run
 
 ```shell
-aws acm list-certificates --profile localstack
+aws acm list-certificates --profile $PROFILE
 ```
 
 Expected output:

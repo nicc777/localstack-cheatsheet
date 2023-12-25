@@ -15,7 +15,7 @@ aws cloudformation create-stack \
 --stack-name eks-security-groups \
 --template-body $TEMPLATE_BODY \
 --parameters $PARAM_VALUE \
---profile localstack
+--profile $PROFILE
 ```
 
 ## Verification
@@ -26,7 +26,7 @@ aws cloudformation create-stack \
 Run for each stack created:
 
 ```shell
-aws cloudformation describe-stack-resources --stack-name eks-security-groups --profile localstack | jq ".StackResources[] | {ResourceType, PhysicalResourceId, ResourceStatus}"
+aws cloudformation describe-stack-resources --stack-name eks-security-groups --profile $PROFILE | jq ".StackResources[] | {ResourceType, PhysicalResourceId, ResourceStatus}"
 ```
 
 Expected Output (Creation in progress):
@@ -153,13 +153,13 @@ Run
 
 ```shell
 # Below may create an error as the API has not been implemented in localstack
-VPC_ID=`aws ec2 describe-vpcs --profile localstack | jq '.Vpcs[] | select(.CidrBlock=="10.10.0.10/24")' | jq -r ".VpcId"` && \
-aws ec2 get-security-groups-for-vpc --vpc-id $VPC_ID --profile localstack
+VPC_ID=`aws ec2 describe-vpcs --profile $PROFILE | jq '.Vpcs[] | select(.CidrBlock=="10.10.0.10/24")' | jq -r ".VpcId"` && \
+aws ec2 get-security-groups-for-vpc --vpc-id $VPC_ID --profile $PROFILE
 
 # This should work:
-VPC_ID=`aws ec2 describe-vpcs --profile localstack | jq '.Vpcs[] | select(.CidrBlock=="10.10.0.10/24")' | jq -r ".VpcId"` && \
+VPC_ID=`aws ec2 describe-vpcs --profile $PROFILE | jq '.Vpcs[] | select(.CidrBlock=="10.10.0.10/24")' | jq -r ".VpcId"` && \
 FILTER="Name=vpc-id,Values=$VPC_ID" && \
-aws ec2 describe-security-groups --filter $FILTER --profile localstack
+aws ec2 describe-security-groups --filter $FILTER --profile $PROFILE
 ```
 
 Expected output:

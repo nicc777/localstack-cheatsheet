@@ -13,13 +13,16 @@ Below is optimized for ArgoCD Version 2.8 for EKS Version 1.24
 Run:
 
 ```shell
+export PROFILE=nicc777
+# export PROFILE=localstack
+
 PARAM_VALUE_1="ParameterKey=NameParam,ParameterValue=argocd" && \
 TEMPLATE_BODY="file://$PWD/cloudformation/ecr-aws-optional-cross-account-access.yaml" && \
 aws cloudformation create-stack \
 --stack-name ecr-argocd \
 --template-body $TEMPLATE_BODY \
 --parameters $PARAM_VALUE_1 \
---profile localstack
+--profile $PROFILE
 
 PARAM_VALUE_1="ParameterKey=NameParam,ParameterValue=argocd-dex" && \
 TEMPLATE_BODY="file://$PWD/cloudformation/ecr-aws-optional-cross-account-access.yaml" && \
@@ -27,7 +30,7 @@ aws cloudformation create-stack \
 --stack-name ecr-argocd-dex \
 --template-body $TEMPLATE_BODY \
 --parameters $PARAM_VALUE_1 \
---profile localstack
+--profile $PROFILE
 
 PARAM_VALUE_1="ParameterKey=NameParam,ParameterValue=argocd-redis" && \
 TEMPLATE_BODY="file://$PWD/cloudformation/ecr-aws-optional-cross-account-access.yaml" && \
@@ -35,7 +38,7 @@ aws cloudformation create-stack \
 --stack-name ecr-argocd-redis \
 --template-body $TEMPLATE_BODY \
 --parameters $PARAM_VALUE_1 \
---profile localstack
+--profile $PROFILE
 ```
 
 Download the appropriate ArgoCD installation manifest:
@@ -122,7 +125,7 @@ TODO - Add ArgoCD to Ingress
 Run
 
 ```shell
-aws cloudformation describe-stack-resources --stack-name ecr-argocd --profile localstack | jq ".StackResources[] | {ResourceType, PhysicalResourceId, ResourceStatus}"
+aws cloudformation describe-stack-resources --stack-name ecr-argocd --profile $PROFILE | jq ".StackResources[] | {ResourceType, PhysicalResourceId, ResourceStatus}"
 ```
 
 Expected Output:
@@ -145,7 +148,7 @@ Expected Output:
 Run:
 
 ```shell
-aws ecr describe-repositories --profile localstack | jq -r ".repositories[] | [ .repositoryName, .repositoryUri ] | @csv"
+aws ecr describe-repositories --profile $PROFILE | jq -r ".repositories[] | [ .repositoryName, .repositoryUri ] | @csv"
 ```
 
 Expected Output:

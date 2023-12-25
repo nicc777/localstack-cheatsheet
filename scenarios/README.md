@@ -1,4 +1,5 @@
 - [Goals and Scenarios](#goals-and-scenarios)
+- [Before Getting Started](#before-getting-started)
   - [Goal: EKS Deployed in a Private VPC](#goal-eks-deployed-in-a-private-vpc)
   - [Goal: Test some localstack features](#goal-test-some-localstack-features)
 - [Other Helpful Commands](#other-helpful-commands)
@@ -16,6 +17,17 @@ A `scenario` is one or more CloudFormation stacks deployed to provision resource
 Each `scenario` is numbered for easy reference.
 
 A `goal` is a group of scenarios put together to achieve some larger end-goal, for example a deployment of EKS in a private VPC will rely on several `scenarios` to be functional and the order in which these are deployed will matter.
+
+# Before Getting Started
+
+Ensure to export the desired profile name to use. For localstack, use the following command:
+
+```shell
+export PROFILE=localstack
+```
+
+> [!TIP]
+> Replace the `localstack` name with one of your real AWS profile names if you would like to run commands against a real AWS account.
 
 ## Goal: EKS Deployed in a Private VPC
 
@@ -47,13 +59,13 @@ Below are the individual deployment scenarios that aim to simulate the creation 
 
 | Goal                                                          | Command                                                                                                                |
 |---------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------|
-| Get the names of all currently deployed CloudFormation stacks | `aws cloudformation list-stacks --profile localstack \| jq -r ".StackSummaries[].StackName"`                           |
-| Get the events from a specific CloudFormation stack           | `aws cloudformation describe-stack-events --stack-name SSSSSS --profile localstack`                                    |
-| List all exports in CloudFormation                            | `aws cloudformation list-exports --profile localstack`                                                                 |
-| List all Prefix Lists in the VPC                              | `aws ec2 describe-prefix-lists --profile localstack`                                                                   |
-| List all VPC Endpoints                                        | `aws ec2 describe-vpc-endpoints --profile localstack \| jq ".VpcEndpoints[]" \| jq -r ".ServiceName"`                  |
-| Describe the created VPC                                      | `aws ec2 describe-vpcs --profile localstack \| jq '.Vpcs[] \| select(.CidrBlock=="10.10.0.10/24")'`                    |
-| List all stacks statuses as CSV data                          | `aws cloudformation describe-stacks --profile localstack \| jq -r ".Stacks[] \| [ .StackName, .StackStatus ] \| @csv"` |
+| Get the names of all currently deployed CloudFormation stacks | `aws cloudformation list-stacks --profile $PROFILE \| jq -r ".StackSummaries[].StackName"`                           |
+| Get the events from a specific CloudFormation stack           | `aws cloudformation describe-stack-events --stack-name SSSSSS --profile $PROFILE`                                    |
+| List all exports in CloudFormation                            | `aws cloudformation list-exports --profile $PROFILE`                                                                 |
+| List all Prefix Lists in the VPC                              | `aws ec2 describe-prefix-lists --profile $PROFILE`                                                                   |
+| List all VPC Endpoints                                        | `aws ec2 describe-vpc-endpoints --profile $PROFILE \| jq ".VpcEndpoints[]" \| jq -r ".ServiceName"`                  |
+| Describe the created VPC                                      | `aws ec2 describe-vpcs --profile $PROFILE \| jq '.Vpcs[] \| select(.CidrBlock=="10.10.0.10/24")'`                    |
+| List all stacks statuses as CSV data                          | `aws cloudformation describe-stacks --profile $PROFILE \| jq -r ".Stacks[] \| [ .StackName, .StackStatus ] \| @csv"` |
 
 # Caveats and Alternative Approaches
 

@@ -8,8 +8,8 @@ Run:
 
 ```shell
 # Apply the CloudFormation stack - 3x AZ's
-VPC_ID=`aws ec2 describe-vpcs --profile localstack | jq '.Vpcs[] | select(.CidrBlock=="10.10.0.10/24")' | jq -r ".VpcId"` && \
-SUBNET_ID=`aws ec2 describe-subnets --filters Name=vpc-id,Values=$VPC_ID Name=availability-zone,Values=us-east-1a "Name=tag:Name,Values=vpc_eks_*" --profile localstack | jq -r ".Subnets[].SubnetId"`  && \
+VPC_ID=`aws ec2 describe-vpcs --profile $PROFILE --output json | jq '.Vpcs[] | select(.CidrBlock=="10.10.0.0/24")' | jq -r ".VpcId"` && \
+SUBNET_ID=`aws ec2 describe-subnets --filters Name=vpc-id,Values=$VPC_ID Name=availability-zone,Values=us-east-1a "Name=tag:Name,Values=vpc_eks_*" --profile $PROFILE --output json | jq -r ".Subnets[].SubnetId"`  && \
 PARAM_VALUE_1="ParameterKey=EksClusterNameParam,ParameterValue=cluster1" && \
 PARAM_VALUE_2="ParameterKey=SubnetIdParam,ParameterValue=${SUBNET_ID}" && \
 TEMPLATE_BODY="file://$PWD/cloudformation/eks-private-cluster-nodes.yaml" && \
@@ -17,10 +17,10 @@ aws cloudformation create-stack \
 --stack-name eks-cluster1-nodegroup-az1 \
 --template-body $TEMPLATE_BODY \
 --parameters $PARAM_VALUE_1 $PARAM_VALUE_2 \
---profile localstack
+--profile $PROFILE
 
-VPC_ID=`aws ec2 describe-vpcs --profile localstack | jq '.Vpcs[] | select(.CidrBlock=="10.10.0.10/24")' | jq -r ".VpcId"` && \
-SUBNET_ID=`aws ec2 describe-subnets --filters Name=vpc-id,Values=$VPC_ID Name=availability-zone,Values=us-east-1b "Name=tag:Name,Values=vpc_eks_*" --profile localstack | jq -r ".Subnets[].SubnetId"`  && \
+VPC_ID=`aws ec2 describe-vpcs --profile $PROFILE --output json | jq '.Vpcs[] | select(.CidrBlock=="10.10.0.0/24")' | jq -r ".VpcId"` && \
+SUBNET_ID=`aws ec2 describe-subnets --filters Name=vpc-id,Values=$VPC_ID Name=availability-zone,Values=us-east-1b "Name=tag:Name,Values=vpc_eks_*" --profile $PROFILE --output json | jq -r ".Subnets[].SubnetId"`  && \
 PARAM_VALUE_1="ParameterKey=EksClusterNameParam,ParameterValue=cluster1" && \
 PARAM_VALUE_2="ParameterKey=SubnetIdParam,ParameterValue=${SUBNET_ID}" && \
 TEMPLATE_BODY="file://$PWD/cloudformation/eks-private-cluster-nodes.yaml" && \
@@ -28,10 +28,10 @@ aws cloudformation create-stack \
 --stack-name eks-cluster1-nodegroup-az2 \
 --template-body $TEMPLATE_BODY \
 --parameters $PARAM_VALUE_1 $PARAM_VALUE_2 \
---profile localstack
+--profile $PROFILE
 
-VPC_ID=`aws ec2 describe-vpcs --profile localstack | jq '.Vpcs[] | select(.CidrBlock=="10.10.0.10/24")' | jq -r ".VpcId"` && \
-SUBNET_ID=`aws ec2 describe-subnets --filters Name=vpc-id,Values=$VPC_ID Name=availability-zone,Values=us-east-1c "Name=tag:Name,Values=vpc_eks_*" --profile localstack | jq -r ".Subnets[].SubnetId"`  && \
+VPC_ID=`aws ec2 describe-vpcs --profile $PROFILE --output json | jq '.Vpcs[] | select(.CidrBlock=="10.10.0.0/24")' | jq -r ".VpcId"` && \
+SUBNET_ID=`aws ec2 describe-subnets --filters Name=vpc-id,Values=$VPC_ID Name=availability-zone,Values=us-east-1c "Name=tag:Name,Values=vpc_eks_*" --profile $PROFILE --output json | jq -r ".Subnets[].SubnetId"`  && \
 PARAM_VALUE_1="ParameterKey=EksClusterNameParam,ParameterValue=cluster1" && \
 PARAM_VALUE_2="ParameterKey=SubnetIdParam,ParameterValue=${SUBNET_ID}" && \
 TEMPLATE_BODY="file://$PWD/cloudformation/eks-private-cluster-nodes.yaml" && \
@@ -39,7 +39,7 @@ aws cloudformation create-stack \
 --stack-name eks-cluster1-nodegroup-az3 \
 --template-body $TEMPLATE_BODY \
 --parameters $PARAM_VALUE_1 $PARAM_VALUE_2 \
---profile localstack
+--profile $PROFILE
 ```
 
 ## Verification
@@ -49,7 +49,7 @@ aws cloudformation create-stack \
 Run
 
 ```shell
-aws cloudformation describe-stack-resources --stack-name eks-cluster1-nodegroup-az2 --profile localstack | jq ".StackResources[] | {ResourceType, PhysicalResourceId, ResourceStatus}"
+aws cloudformation describe-stack-resources --stack-name eks-cluster1-nodegroup-az2 --profile $PROFILE | jq ".StackResources[] | {ResourceType, PhysicalResourceId, ResourceStatus}"
 ```
 
 Expected Output:
@@ -68,7 +68,7 @@ For this test, we will use `kubectl` to confirm there are at least 3x nodes:
 
 ```shell
 # Get EKS kubernetes configuration
-rm -vf $HOME/eksconfig && aws eks update-kubeconfig --name cluster1 --kubeconfig $HOME/eksconfig --endpoint-url=http://localhost:4566 --profile localstack
+rm -vf $HOME/eksconfig && aws eks update-kubeconfig --name cluster1 --kubeconfig $HOME/eksconfig --endpoint-url=http://localhost:4566 --profile $PROFILE
 
 # Set our configuration environment variable
 export KUBECONFIG=$HOME/eksconfig 
@@ -92,7 +92,7 @@ k3d-cluster1-agent-eks-cluster1-nodegroup-az3-0   Ready    <none>               
 Updated the Node group scaling configuration:
 
 ```shell
-aws eks update-nodegroup-config --cluster-name cluster1 --nodegroup-name eks-cluster1-nodegroup-az1 --scaling-config minSize=2,maxSize=10,desiredSize=2 --profile localstack
+aws eks update-nodegroup-config --cluster-name cluster1 --nodegroup-name eks-cluster1-nodegroup-az1 --scaling-config minSize=2,maxSize=10,desiredSize=2 --profile $PROFILE
 ```
 
 Expected output:
@@ -126,7 +126,7 @@ Expected output:
 Confirm:
 
 ```shell
-aws eks describe-nodegroup --cluster-name cluster1 --nodegroup-name eks-cluster1-nodegroup-az1 --profile localstack
+aws eks describe-nodegroup --cluster-name cluster1 --nodegroup-name eks-cluster1-nodegroup-az1 --profile $PROFILE
 ```
 
 Expected output:
