@@ -47,11 +47,11 @@ shift $((OPTIND-1))
 . venv/bin/activate
 export PATH=$PATH:$PWD/opt/bin:$PWD/venv/bin
 
-# alias aws='$PWD/opt/bin/aws --endpoint-url=http://localhost:4566'
-alias aws='$PWD/opt/bin/aws'
+alias aws='$PWD/opt/bin/aws --endpoint-url=http://localhost:4566'
+# alias aws='$PWD/opt/bin/aws'
 
-# export PROFILE=localstack
-export PROFILE=nicc777
+export PROFILE=localstack
+# export PROFILE=nicc777
 
 ###############################################################################
 ###                                                                         ###

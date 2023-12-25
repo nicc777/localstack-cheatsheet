@@ -54,7 +54,7 @@ Resources:
           - !ImportValue ClusterGeneralSecurityGroupId
           - !ImportValue ClusterAdditionalSecurityGroupId
         SubnetIds:
-          - !ImportValue SubnetMainAz1
+          # - !ImportValue SubnetMainAz1
           - !ImportValue SubnetMainAz2
           - !ImportValue SubnetMainAz3
         EndpointPrivateAccess: true
