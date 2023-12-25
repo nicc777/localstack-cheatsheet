@@ -47,7 +47,11 @@ shift $((OPTIND-1))
 . venv/bin/activate
 export PATH=$PATH:$PWD/opt/bin:$PWD/venv/bin
 
-alias aws='$PWD/opt/bin/aws --endpoint-url=http://localhost:4566'
+# alias aws='$PWD/opt/bin/aws --endpoint-url=http://localhost:4566'
+alias aws='$PWD/opt/bin/aws'
+
+# export PROFILE=localstack
+export PROFILE=nicc777
 
 ###############################################################################
 ###                                                                         ###
@@ -55,29 +59,31 @@ alias aws='$PWD/opt/bin/aws --endpoint-url=http://localhost:4566'
 ###                                                                         ###
 ###############################################################################
 
-
-for ENDPOINT_TYPE in fsx sqs sts secretsmanager logs elasticloadbalancing ecr.dkr ecr.api ec2 autoscaling cloudformation ebs eks xray
+# TODO "fsx" and others should be optional? Perhaps receive the list via parameters...
+# Original list: fsx sts secretsmanager logs elasticloadbalancing ecr.dkr ecr.api ec2 autoscaling cloudformation ebs eks xray
+for ENDPOINT_TYPE in sts secretsmanager logs elasticloadbalancing ecr.dkr ecr.api ec2 autoscaling cloudformation ebs eks
 do
     echo "Provisioning ${ENDPOINT_TYPE} VPC Endpoint"
+    ENDPOINT_TYPE_NAME=`echo $ENDPOINT_TYPE | tr "." -`
     PARAM_VALUE="ParameterKey=ServiceEndpointNameParam,ParameterValue=${ENDPOINT_TYPE}" && \
-    STACK_NAME="vpc-endpoint-interface-${ENDPOINT_TYPE}" && \
+    STACK_NAME="vpc-endpoint-interface-${ENDPOINT_TYPE_NAME}" && \
     TEMPLATE_BODY="file://$PWD/cloudformation/vpc-endpoint-interface-type.yaml" && \
-    aws cloudformation create-stack \
+    AWS_PAGER="" aws cloudformation create-stack \
         --stack-name $STACK_NAME \
         --template-body $TEMPLATE_BODY \
         --parameters $PARAM_VALUE \
-        --profile localstack
-    sleep 5
+        --profile $PROFILE
+    sleep 30
 done
 
 ENDPOINT_TYPE="s3" && \
 PARAM_VALUE="ParameterKey=ServiceEndpointNameParam,ParameterValue=${ENDPOINT_TYPE}" && \
 STACK_NAME="vpc-endpoint-interface-${ENDPOINT_TYPE}" && \
 TEMPLATE_BODY="file://$PWD/cloudformation/vpc-endpoint-gateway-type.yaml" && \
-aws cloudformation create-stack \
+AWS_PAGER="" aws cloudformation create-stack \
 --stack-name $STACK_NAME \
 --template-body $TEMPLATE_BODY \
 --parameters $PARAM_VALUE \
---profile localstack
+--profile $PROFILE
 
 

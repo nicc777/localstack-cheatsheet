@@ -10,7 +10,7 @@ Parameters:
 
 Resources:
 
-  FsxVpcEndpoint:
+  VpcEndpoint:
     Type: AWS::EC2::VPCEndpoint
     Properties:
       PrivateDnsEnabled: true
