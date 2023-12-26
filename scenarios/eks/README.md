@@ -36,9 +36,9 @@ In the Lab environment, the configuration will assume access to GitHub is requir
 | Scenario                                 | Description                                                                                    | Dependencies (Scenarios)                                                   |
 |:----------------------------------------:|------------------------------------------------------------------------------------------------|:--------------------------------------------------------------------------:|
 | [0010](./0010-eks-security-groups.md)    | Security groups required by EKS.                                                               | [VPC Deployment Goal](../vpc-private-with-limited-public-access/README.md) |
-| [0020](./0020-private-vpc-endpoints.md)  | Private VPC's require endpoints for services in the VPC to communicate with AWS Service API's. | 0030                                                                       |
-| [0030](./0030-eks-cluster.md)            | Deploy the EKS cluster.                                                                        | 0050                                                                       |
-| [0040](./0040-eks-node-base.md)          | Deploy the base stack that each EKS Node group will reference.                                 | 0080                                                                       |
-| [0050](./0050-eks-node-groups.md)        | Deploy a Nodegroup per available subnet.                                                       | 0090                                                                       |
-| [0060](./0060-ecr-argocd.md)             | Create an ECR repository for the ArgoCD Image and then deploy ArgoCD in EKS.                   | 0100                                                                       |
+| [0020](./0020-private-vpc-endpoints.md)  | Private VPC's require endpoints for services in the VPC to communicate with AWS Service API's. | 0010                                                                       |
+| [0030](./0030-eks-cluster.md)            | Deploy the EKS cluster.                                                                        | 0020                                                                       |
+| [0040](./0040-eks-node-base.md)          | Deploy the base stack that each EKS Node group will reference.                                 | 0030                                                                       |
+| [0050](./0050-eks-node-groups.md)        | Deploy a Nodegroup per available subnet.                                                       | 0040                                                                       |
+| [0060](./0060-ecr-argocd.md)             | Create an ECR repository for the ArgoCD Image and then deploy ArgoCD in EKS.                   | N/A                                                                        |
 
