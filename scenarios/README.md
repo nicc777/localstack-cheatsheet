@@ -3,7 +3,6 @@
   - [Goal: Testing Localstack Capabilities: CloudFormation](#goal-testing-localstack-capabilities-cloudformation)
   - [Goal: Base VPC Deployment](#goal-base-vpc-deployment)
   - [Goal: EKS Deployed in a Private VPC](#goal-eks-deployed-in-a-private-vpc)
-  - [Goal: Test some localstack features](#goal-test-some-localstack-features)
 - [Helpful Commands](#helpful-commands)
   - [One-Liners](#one-liners)
 - [Caveats and Alternative Approaches](#caveats-and-alternative-approaches)
@@ -48,12 +47,6 @@ This forms the bases for many other deployments and is usually a dependency for 
 An example of deploying a private EKS cluster (lab environment).
 
 [Link to goal documentation](./eks/README.md)
-
-## Goal: Test some localstack features
-
-Some examples of testing `localstack` features.
-
-[Link to goal documentation](./general/README.md)
 
 # Helpful Commands
 
