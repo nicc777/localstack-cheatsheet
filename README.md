@@ -13,11 +13,12 @@ Cheatsheet I use myself for testing new AWS development locally using [_localsta
 
 # Update History
 
-| Date       | Status                                                               | Milestones                                                                                              |
-|:----------:|----------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
-| 2023-12-22 | <li>`localstack`: not yet working</li><li>`AWS`: Untested</li>       | Created most of the key scripts and instructions to create a Private EKS Cluster                        |
-| 2023-12-24 | <li>`localstack`: mostly working</li><li>`AWS`: Untested</li>        | Refer to [this issue](https://github.com/nicc777/localstack-cheatsheet/issues/1)                        |
-| 2023-12-25 | <li>`localstack`: mostly working</li><li>`AWS`: mostly working</li>  | Refer to [this issue](https://github.com/nicc777/localstack-cheatsheet/issues/1). See below for details |
+| Date       | Status                                                               | Milestones                                                                                                                                             |
+|:----------:|----------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 2023-12-22 | <li>`localstack`: not yet working</li><li>`AWS`: Untested</li>       | Created most of the key scripts and instructions to create a Private EKS Cluster                                                                       |
+| 2023-12-24 | <li>`localstack`: mostly working</li><li>`AWS`: Untested</li>        | Refer to [this issue](https://github.com/nicc777/localstack-cheatsheet/issues/1)                                                                       |
+| 2023-12-25 | <li>`localstack`: mostly working</li><li>`AWS`: mostly working</li>  | Refer to [this issue](https://github.com/nicc777/localstack-cheatsheet/issues/1). See below for details                                                |
+| 2023-12-26 | <li>`localstack`: mostly working</li><li>`AWS`: mostly working</li>  | Similar status to the previous day, but the documentation was re-organized and tidied up in preparation for some new scenarios that will now be added. |
 
 AWS State as on 2023-12-25:
 
