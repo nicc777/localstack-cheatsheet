@@ -1,6 +1,6 @@
-# EKS Node Base
+# Basic localstack functionality tests
 
-The following CloudFOrmation stack tests the ability to select various parameter options based non certain conditions.
+The CloudFormation stack deployments tests the ability to select various parameter options based non certain conditions. It's a good way to test your `localstack` configuration.
 
 ## Deployment
 
@@ -26,4 +26,7 @@ aws cloudformation create-stack \
 
 ## Verification
 
-TODO
+<!-- TODO Add verification steps and commands to verify the CloudFormation deployments  -->
+
+> [!NOTE]
+> This is still work in progress...

@@ -1,8 +1,10 @@
 - [Goals and Scenarios](#goals-and-scenarios)
 - [Before Getting Started](#before-getting-started)
+  - [Goal: Testing Localstack Capabilities: CloudFormation](#goal-testing-localstack-capabilities-cloudformation)
+  - [Goal: Base VPC Deployment](#goal-base-vpc-deployment)
   - [Goal: EKS Deployed in a Private VPC](#goal-eks-deployed-in-a-private-vpc)
   - [Goal: Test some localstack features](#goal-test-some-localstack-features)
-- [Other Helpful Commands](#other-helpful-commands)
+- [Helpful Commands](#helpful-commands)
   - [One-Liners](#one-liners)
 - [Caveats and Alternative Approaches](#caveats-and-alternative-approaches)
   - [CloudFormation](#cloudformation)
@@ -29,43 +31,43 @@ export PROFILE=localstack
 > [!TIP]
 > Replace the `localstack` name with one of your real AWS profile names if you would like to run commands against a real AWS account.
 
+## Goal: Testing Localstack Capabilities: CloudFormation
+
+This forms the bases for many other deployments and is usually a dependency for many other goals.
+
+[Link to goal documentation](./general/README.md)
+
+## Goal: Base VPC Deployment
+
+This forms the bases for many other deployments and is usually a dependency for many other goals.
+
+[Link to goal documentation](./vpc-private-with-limited-public-access/README.md)
+
 ## Goal: EKS Deployed in a Private VPC
 
-Below are the individual deployment scenarios that aim to simulate the creation of a EKS cluster in a Private VPC. Implement the deployments in numerical order.
+An example of deploying a private EKS cluster (lab environment).
 
-| Scenario                                                                    | Description                                                                                                                | Dependencies (Scenarios) |
-|:---------------------------------------------------------------------------:|----------------------------------------------------------------------------------------------------------------------------|:------------------------:|
-| [0020](./eks/0020-basic-s3-with-lifecycle-policy.md)                        | Just a single S3 bucket with a configurable lifecycle policy (days after which objects are deleted).                       | N/A                      |
-| [0030](./eks/0030-basic-private-vpc-with-flowlogs-to-s3-and-route53.md)     | The aim of this scenario is to deploy a basic private VPC with Route53. It may serve as a base for several other examples. | 0020                     |
-| [0035](./eks/0035-enable-ec2-ssm-access.md)                                 | Enable policies to allow EC2 instance access via SSM.                                                                      | N/A                      |
-| [0040](./eks/0040-add-secondary-cidr-to-private-vpc.md)                     | Adds a secondary CIDR to a Private VPC, which is useful for scenarios where you have a limited VPC CIDR with EKS deployed. | 0030                     |
-| [0045](./eks/0045-eks-security-groups.md)                                   | Security groups required by EKS.                                                                                           | 0040                     |
-| [0050](./eks/0050-private-vpc-endpoints.md)                                 | Private VPC's require endpoints for services in the VPC to communicate with AWS Service API's.                             | 0030                     |
-| [0060](./eks/0060-domain-certificate.md)                                    | A domain certificate for our Route 53 domain.                                                                              | 0030                     |
-| [0080](./eks/0080-eks-cluster.md)                                           | Deploy the EKS cluster.                                                                                                    | 0050                     |
-| [0090](./eks/0090-eks-node-base.md)                                         | Deploy the base stack that each EKS Node group will reference.                                                             | 0080                     |
-| [0100](./eks/0100-eks-node-groups.md)                                       | Deploy a Nodegroup per available subnet.                                                                                   | 0090                     |
-| [0110](./eks/0110-ecr-argocd.md)                                            | Create an ECR repository for the ArgoCD Image and then deploy ArgoCD in EKS.                                               | 0100                     |
+[Link to goal documentation](./eks/README.md)
 
 ## Goal: Test some localstack features
 
-| Scenario                                                                                                                | Description                                                                                                                |
-|-------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
-| [Test: CloudFormation COnditions and Functions](./general/0010-test-cloudformation-conditions-and-functions.md)         | The following CloudFOrmation stack tests the ability to select various parameter options based non certain conditions.     |
+Some examples of testing `localstack` features.
 
-# Other Helpful Commands
+[Link to goal documentation](./general/README.md)
+
+# Helpful Commands
 
 ## One-Liners
 
 | Goal                                                          | Command                                                                                                                |
 |---------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------|
-| Get the names of all currently deployed CloudFormation stacks | `aws cloudformation list-stacks --profile $PROFILE \| jq -r ".StackSummaries[].StackName"`                           |
-| Get the events from a specific CloudFormation stack           | `aws cloudformation describe-stack-events --stack-name SSSSSS --profile $PROFILE`                                    |
-| List all exports in CloudFormation                            | `aws cloudformation list-exports --profile $PROFILE`                                                                 |
-| List all Prefix Lists in the VPC                              | `aws ec2 describe-prefix-lists --profile $PROFILE`                                                                   |
-| List all VPC Endpoints                                        | `aws ec2 describe-vpc-endpoints --profile $PROFILE \| jq ".VpcEndpoints[]" \| jq -r ".ServiceName"`                  |
-| Describe the created VPC                                      | `aws ec2 describe-vpcs --profile $PROFILE \| jq '.Vpcs[] \| select(.CidrBlock=="10.10.0.10/24")'`                    |
-| List all stacks statuses as CSV data                          | `aws cloudformation describe-stacks --profile $PROFILE \| jq -r ".Stacks[] \| [ .StackName, .StackStatus ] \| @csv"` |
+| Get the names of all currently deployed CloudFormation stacks | `aws cloudformation list-stacks --profile $PROFILE \| jq -r ".StackSummaries[].StackName"`                             |
+| Get the events from a specific CloudFormation stack           | `aws cloudformation describe-stack-events --stack-name SSSSSS --profile $PROFILE`                                      |
+| List all exports in CloudFormation                            | `aws cloudformation list-exports --profile $PROFILE`                                                                   |
+| List all Prefix Lists in the VPC                              | `aws ec2 describe-prefix-lists --profile $PROFILE`                                                                     |
+| List all VPC Endpoints                                        | `aws ec2 describe-vpc-endpoints --profile $PROFILE \| jq ".VpcEndpoints[]" \| jq -r ".ServiceName"`                    |
+| Describe the created VPC                                      | `aws ec2 describe-vpcs --profile $PROFILE \| jq '.Vpcs[] \| select(.CidrBlock=="10.10.0.10/24")'`                      |
+| List all stacks statuses as CSV data                          | `aws cloudformation describe-stacks --profile $PROFILE \| jq -r ".Stacks[] \| [ .StackName, .StackStatus ] \| @csv"`   |
 
 # Caveats and Alternative Approaches
 

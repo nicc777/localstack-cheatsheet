@@ -9,6 +9,7 @@
         "localstack",
         "Nodegroup",
         "setuptools",
+        "testtest",
         "VPCDHCP",
         "xvda"
     ]

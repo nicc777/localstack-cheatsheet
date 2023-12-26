@@ -163,3 +163,4 @@ cython_debug/
 opt/
 awscliv2.zip
 aws/
+images/src-diagrams/.$lab-vpc.drawio.bkp
