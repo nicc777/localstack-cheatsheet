@@ -12,3 +12,5 @@ These deployments specifically test the features of CloudFormation in `localstac
 |:---------------------------------------------------------------:|----------------------------------------------------------------------------------------------------------------------------|:------------------------:|
 | [0010](./0010-test-cloudformation-conditions-and-functions.md)  | The CloudFormation stack deployments tests the ability to select various parameter options based non certain conditions.   | N/A                      |
 
+
+
