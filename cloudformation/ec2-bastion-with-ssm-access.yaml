@@ -25,7 +25,7 @@ Resources:
     Type: AWS::EC2::SecurityGroup
     Properties: 
       GroupDescription: The Instance Host Security Group
-      GroupName: !Sub '${AWS::StackName}-BastionSecurityGroup-3'
+      GroupName: !Sub '${AWS::StackName}-EfsSecurityGroup'
       VpcId: !ImportValue Vpc
 
   EFSIngressNFS:
@@ -60,7 +60,7 @@ Resources:
     Type: AWS::EC2::SecurityGroup
     Properties: 
       GroupDescription: The Instance Host Security Group
-      GroupName: !Sub '${AWS::StackName}-BastionSecurityGroup-3'
+      GroupName: !Sub '${AWS::StackName}-BastionSecurityGroup'
       VpcId: !ImportValue Vpc
 
   HighPortsIngressPrivateVpc1:
