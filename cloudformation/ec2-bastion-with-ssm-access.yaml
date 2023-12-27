@@ -120,13 +120,6 @@ Resources:
     Properties:
       LaunchTemplateName: !Sub '${AWS::StackName}-LaunchTemplate'
       LaunchTemplateData:
-        # BlockDeviceMappings:
-        #   - Ebs:
-        #       VolumeSize: 8
-        #       VolumeType: 'gp2'
-        #       DeleteOnTermination: True
-        #       Encrypted: True
-        #     DeviceName: '/dev/sda1'
         ImageId: !If [UseSSmImageId, !Ref BastionNodeAmiIdSsmParam, !Ref ImageIdOverrideParam]
         InstanceType: 't3.2xlarge'
         IamInstanceProfile: 
