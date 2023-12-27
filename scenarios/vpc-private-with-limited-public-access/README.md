@@ -3,6 +3,8 @@
 - [Conceptual Designs](#conceptual-designs)
   - [General Networking](#general-networking)
   - [Ingress and Egress](#ingress-and-egress)
+  - [Bastion Host](#bastion-host)
+  - [Proxy Service](#proxy-service)
 - [Deployment](#deployment)
   - [General Networking Stacks](#general-networking-stacks)
   - [Ingress and Egress Stacks](#ingress-and-egress-stacks)
@@ -54,6 +56,22 @@ There is also a Lambda Function stack deployed that will scan for EC2 instances 
 | `MaxUptime`          | The maximum allowed uptime in seconds, relative to the instance start time. If not present, the default of 2 hours (7200 seconds) will be assumed |
 
 Administrators can directly edit the `MaxUptime` as required. The initial value is set as a parameter in the CloudFormation templates for the EC2 instances.
+
+## Bastion Host
+
+The bastion host can be connected to using SSM. A NFS mount is also created and mounted to the mount point `/mnd/efs`. This has at least two benefits:
+
+* Data can be preserved as instances come and go
+* With NFS, the same data will be available to even multiple bastion instances, which is great if you would like to let each administrator spin up their own instance.
+
+Only the launch template is actually created without any initial instances. Administrators can start bastion instances as and when required.
+
+## Proxy Service
+
+<!-- TODO Complete proxy documentation  -->
+
+> [!NOTE]
+> This is still work in progress...
 
 # Deployment
 
