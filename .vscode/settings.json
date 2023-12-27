@@ -8,15 +8,21 @@
         "awslocal",
         "awsregion",
         "Cheatsheet",
+        "efsid",
         "flowlogs",
         "localstack",
         "ncat",
+        "nfsvers",
         "nmap",
         "Nodegroup",
+        "retrans",
+        "rsize",
         "setuptools",
         "stackname",
         "testtest",
+        "timeo",
         "VPCDHCP",
+        "wsize",
         "xvda"
     ]
 }

@@ -21,6 +21,41 @@ Conditions:
 
 Resources:
 
+  EFSSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties: 
+      GroupDescription: The Instance Host Security Group
+      GroupName: !Sub '${AWS::StackName}-BastionSecurityGroup-3'
+      VpcId: !ImportValue Vpc
+
+  EFSIngressNFS:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties: 
+      Description: Allow NFS Inbound
+      FromPort: 2049
+      ToPort: 2049
+      GroupId: !Ref EFSSecurityGroup
+      IpProtocol: tcp
+      CidrIp: !ImportValue PublicSubnet1Cidr
+
+  EFSFileSystem:
+    Type: AWS::EFS::FileSystem
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+    Properties:
+      FileSystemTags:
+      - Key: Name
+        Value: 'bastion-nfs'
+
+  EFSMountTargetAZa:
+    Type: AWS::EFS::MountTarget
+    Properties:
+      FileSystemId:
+        Ref: EFSFileSystem
+      SubnetId: !ImportValue  PublicSubnet1Id
+      SecurityGroups:
+      - Ref: EFSSecurityGroup
+
   BastionSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties: 
@@ -127,6 +162,9 @@ Resources:
                 unzip awscliv2.zip
                 ./aws/install
 
+                mkdir -p /mnt/efs/
+                mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2 ${efsid}.efs.${awsregion}.amazonaws.com:/ /mnt/efs
+
                 echo "RUNNING CFN-SIGNAL"
                 /opt/aws/bin/cfn-signal --exit-code $? --region ${awsregion} --stack ${stackname} --resource BastionLaunchTemplate
                 echo "CFN-SIGNAL DONE"
@@ -137,6 +175,7 @@ Resources:
               - awscli2url: !Ref AwsCliZipUrlParam
                 awsregion: !Ref AWS::Region
                 stackname: !Ref AWS::StackName
+                efsid: !Ref EFSFileSystem
 
         TagSpecifications:
           - ResourceType: instance

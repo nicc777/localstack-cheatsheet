@@ -341,3 +341,15 @@ Outputs:
     Value: !GetAtt SubnetMainAz3.AvailabilityZone
     Export:
       Name: SubnetMainAz3Az
+  PublicSubnet1Az:
+    Value: !GetAtt PublicSubnet1.AvailabilityZone
+    Export:
+      Name: PublicSubnet1AvailabilityZone
+  PublicSubnet1Id:
+    Value: !Ref PublicSubnet1
+    Export:
+      Name: PublicSubnet1Id
+  PublicSubnet1CidrBlock:
+    Value: !GetAtt PublicSubnet1.CidrBlock
+    Export:
+      Name: PublicSubnet1Cidr
