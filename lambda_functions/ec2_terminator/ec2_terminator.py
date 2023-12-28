@@ -142,6 +142,15 @@ def handler(event, context):
             instance_ids_to_terminate.append(instance['InstanceId'])
     
     if len(instance_ids_to_terminate) > 0:
+
+        """
+            The documentation suggests instances can be terminated in batches of 1000, but it may be better to try 
+            smaller chunks. Remember to give the Lambda function enough time to complete all operations. In very large
+            environments where you expect to manage 100's or thousands of instances, it might even be a good idea to
+            consider posting these images to an SQS queue to allow a downstream Lambda function to handle the actual
+            terminations.
+        """
+
         chunks = split_list(lst=instance_ids_to_terminate, chunk_size=10)
         for chunk_of_instance_ids_to_terminate in chunks:
             print('Terminating instance(s): {}'.format(chunk_of_instance_ids_to_terminate))
