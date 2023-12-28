@@ -63,6 +63,16 @@ def get_ec2_instances_under_management(client, next_token: str=None, retries: in
             )
     except:
         print('EXCEPTION: {}'.format(traceback.format_exc()))
+
+        """
+            Below is a very simple sleep and retry formula.
+
+            For more info, refer to:
+
+                * https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/
+                * https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/
+        """
+
         if retries < 4:
             jitter = random.random() * (1+float(retries))
             time.sleep(float(retries) * jitter)
