@@ -22,6 +22,9 @@ def split_list(lst, chunk_size):
 
 
 def get_ec2_instances_under_management(client, next_token: str=None, retries: int=0, utc_offset: int=0)->list:
+    """
+        Only return instances in a running state that has the "IdleStopperManaged" tag present.
+    """
     instances = list()
     
     response = dict()
