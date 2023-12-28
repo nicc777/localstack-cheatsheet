@@ -24,6 +24,11 @@ def split_list(lst, chunk_size):
 def get_ec2_instances_under_management(client, next_token: str=None, retries: int=0, utc_offset: int=0)->list:
     """
         Only return instances in a running state that has the "IdleStopperManaged" tag present.
+
+        NOTE: We cannot easily determine the instance termination protection level with the current describe API call.
+        Some of these instances may therefore have termination protection enabled. For this lambda function to be
+        effective, it is highly recommended that instances with termination protection must NOT include the
+        "IdleStopperManaged" tag.
     """
     instances = list()
     
@@ -108,6 +113,16 @@ def get_ec2_instances_under_management(client, next_token: str=None, retries: in
 
 
 def terminate_ec2_instance(client, instance_ids: list):
+    """
+        The exact behavior of the API call may change over time, but the following was true at the time of creating
+        the function.
+        
+        Instances with termination protection will not be terminated. Assuming one of the instances in the provided
+        list has termination protection enabled, and since we are providing a list of instances, instances will be
+        terminated until the instance with the termination protection in the list is reached. Therefore, depending in
+        the protected instance position in the list, more than one instance may fail to terminate, should that/those
+        instances be after the protected instance in the list.        
+    """
     try:
         client.terminate_instances(InstanceIds=instance_ids)
     except:
