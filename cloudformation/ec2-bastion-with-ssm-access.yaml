@@ -121,7 +121,7 @@ Resources:
       LaunchTemplateName: !Sub '${AWS::StackName}-LaunchTemplate'
       LaunchTemplateData:
         ImageId: !If [UseSSmImageId, !Ref BastionNodeAmiIdSsmParam, !Ref ImageIdOverrideParam]
-        InstanceType: 't3.2xlarge'
+        InstanceType: 't2.micro'
         IamInstanceProfile: 
             Arn: !GetAtt RootInstanceProfile.Arn
         SecurityGroupIds:
