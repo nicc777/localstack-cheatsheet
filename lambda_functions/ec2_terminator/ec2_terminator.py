@@ -65,7 +65,9 @@ def get_ec2_instances_under_management(client, next_token: str=None, retries: in
         print('EXCEPTION: {}'.format(traceback.format_exc()))
 
         """
-            Below is a very simple sleep and retry formula.
+            Below is a very simple sleep and retry formula. This will work in small environments. For larger more 
+            complex environments where you have dozens or hundreds or even more clients, consider other options to 
+            handle throttling errors better.
 
             For more info, refer to:
 
