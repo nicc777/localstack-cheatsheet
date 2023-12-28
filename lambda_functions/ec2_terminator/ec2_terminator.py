@@ -136,7 +136,7 @@ def handler(event, context):
         if runtime > max_age:
             terminate_instance = True
         print('   Configured Max Uptime: : {}'.format(max_age))
-        print('   Age                    : {}'.format(runtime))
+        print('   Current Instance Age   : {}'.format(runtime))
         print('   Terminate Instance     : {}'.format(terminate_instance))
         if terminate_instance is True:
             instance_ids_to_terminate.append(instance['InstanceId'])
