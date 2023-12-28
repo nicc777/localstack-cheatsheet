@@ -119,9 +119,10 @@ def terminate_ec2_instance(client, instance_ids: list):
         
         Instances with termination protection will not be terminated. Assuming one of the instances in the provided
         list has termination protection enabled, and since we are providing a list of instances, instances will be
-        terminated until the instance with the termination protection in the list is reached. Therefore, depending in
+        terminated until the instance with the termination protection in the list is reached. Therefore, depending on
         the protected instance position in the list, more than one instance may fail to terminate, should that/those
-        instances be after the protected instance in the list.        
+        instances be after the protected instance in the list (and regardless of their own termination protection
+        status).
     """
     try:
         client.terminate_instances(InstanceIds=instance_ids)
