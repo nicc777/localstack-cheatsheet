@@ -148,7 +148,7 @@ def handler(event, context):
     for instance in instances:
         print('Processing instance {} running since {}'.format(instance['InstanceId'], instance['LaunchTime']))
         runtime = now - instance['LaunchTime']        
-        max_age = 7200
+        max_age = int(os.getenv('MAX_AGE', '7200'))
         if 'MaxUptime' in instance['Tags']:
             max_age = int(instance['Tags']['MaxUptime'])
         terminate_instance = False
