@@ -15,7 +15,50 @@
 	"customizations": {
 		// Configure properties specific to VS Code.
 		"vscode": {
-			"settings": {},
+			"settings": {
+				"cSpell.words": [
+					"apiserver",
+					"argocd",
+					"arturock",
+					"autoscaler",
+					"awscli",
+					"awscliv",
+					"awslocal",
+					"awsregion",
+					"azuretools",
+					"bierner",
+					"boto",
+					"Cheatsheet",
+					"donjayamanne",
+					"drawio",
+					"efsid",
+					"flowlogs",
+					"githistory",
+					"gitstash",
+					"gruntfuggly",
+					"hediet",
+					"isort",
+					"kddejong",
+					"localstack",
+					"mhutchie",
+					"mktime",
+					"ncat",
+					"nfsvers",
+					"nmap",
+					"Nodegroup",
+					"pylance",
+					"retrans",
+					"rsize",
+					"setuptools",
+					"stackname",
+					"testtest",
+					"timeo",
+					"VPCDHCP",
+					"wsize",
+					"xvda",
+					"yzhang"
+				]
+			},
 			"extensions": [
 				"mhutchie.git-graph",
                 "hediet.vscode-drawio",
@@ -50,8 +93,10 @@
 	// },
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "pip3 install boto3"
+	"postCreateCommand": "pip3 install boto3",
 
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	// "remoteUser": "root"
+
+	"updateRemoteUserUID": true
 }
