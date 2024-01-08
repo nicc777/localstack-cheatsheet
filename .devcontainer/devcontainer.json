@@ -1,7 +1,7 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/python
 {
-	"name": "Python 3",
+	"name": "Python 3.10 for AWS Lambda",
 
     // For available images see https://mcr.microsoft.com/v2/vscode/devcontainers/python/tags/list
     // Alignment to the supported AWS Lambda Python Runtime might be useful in some cases. 
